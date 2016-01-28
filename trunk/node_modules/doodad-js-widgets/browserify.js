@@ -1,5 +1,5 @@
 // dOOdad - Object-oriented programming framework
-// File: index.js - Widgets base module startup file
+// File: main.js - Module startup file for 'browserify'.
 // Project home: https://sourceforge.net/projects/doodad-js/
 // Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
 // Author: Claude Petit, Quebec city
@@ -21,49 +21,43 @@
 //	See the License for the specific language governing permissions and
 //	limitations under the License.
 
-(function() {
-	var global = this;
+"use strict";
 
-	var exports = {};
-	if (typeof process === 'object') {
-		module.exports = exports;
-	};
-	
-	var MODULE_NAME = 'doodad-js-widgets';
-	
-	exports.add = function add(DD_MODULES) {
+module.exports = {
+	add: function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
-		DD_MODULES[MODULE_NAME] = {
+		DD_MODULES['doodad-js-widgets'] = {
 			type: null,
-			version: '0b',
+			version: '0a',
 			namespaces: null,
-			dependencies: ['Doodad.Types', 'Doodad.Tools', 'Doodad.Modules'],
-			exports: exports,
+			dependencies: [],
+			exports: module.exports,
 			
 			create: function create(root, /*optional*/_options) {
-				"use strict";
-				
-				var doodad = root.Doodad,
-					modules = doodad.Modules;
-				
-				var fromSource = root.getOptions().settings.fromSource,
-					promise;
-				
-				promise = modules.load(MODULE_NAME, (fromSource ? (global.process ? 'src/common/Widgets.js' : 'Widgets.js') : 'Widgets.min.js'), _options);
-				if (typeof process !== 'object') {
-					promise = promise.then(function() {
-						return modules.load(MODULE_NAME, (fromSource ? 'Client_Widgets.js' : 'Client_Widgets.min.js'), _options);
-					});
+				var config = null;
+				try {
+					config = require('./dist/doodad-js-widgets/config.json');
+				} catch(ex) {
 				};
 				
-				return promise;
+				var fromSource = root.getOptions().settings.fromSource,
+					modules = {};
+				
+				if (fromSource) {
+					require("./dist/doodad-js-widgets/Widgets.js").add(modules);
+					require("./dist/doodad-js-widgets/Client_Widgets.js").add(modules);
+				} else {
+					// TODO: Find a way to prevent browserify to bundle both versions.
+					//require("./dist/doodad-js-widgets/Widgets.min.js").add(modules);
+					//require("./dist/doodad-js-widgets/Client_Widgets.min.js").add(modules);
+					
+					require("./dist/doodad-js-widgets/Widgets.js").add(modules);
+					require("./dist/doodad-js-widgets/Client_Widgets.js").add(modules);
+				};
+				
+				return root.Doodad.Namespaces.loadNamespaces(null, false, config, modules);
 			},
 		};
 		return DD_MODULES;
-	};
-	
-	if (typeof process !== 'object') {
-		// <PRB> export/import are not yet supported in browsers
-		global.DD_MODULES = exports.add(global.DD_MODULES);
-	};
-}).call((typeof global !== 'undefined') ? global : ((typeof window !== 'undefined') ? window : this));
+	},
+};
