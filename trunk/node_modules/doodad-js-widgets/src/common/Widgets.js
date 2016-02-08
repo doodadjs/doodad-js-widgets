@@ -116,7 +116,7 @@
 								};
 							};
 							if (classes.length) {
-								attributes.class = tools.unique(classes).join(' ');
+								attributes.class = types.unique(classes).join(' ');
 							};
 						};
 						
@@ -132,7 +132,7 @@
 
 						if (attributes.class) {
 							var classes = attributes.class.split(' ');
-							classes = tools.unique(classes);
+							classes = types.unique(classes);
 							for (var i = classes.length - 1; i >= 0; i--) {
 								var name = classes[i];
 								if (name) {
@@ -247,7 +247,7 @@
 							};
 							
 							if (classes.length) {
-								identity.class = tools.unique(classes).join(' ');
+								identity.class = types.unique(classes).join(' ');
 							};
 						};
 
@@ -269,7 +269,7 @@
 
 						if (identity.class) {
 							var classes = identity.class.split(' ');
-							classes = tools.unique(classes);
+							classes = types.unique(classes);
 							for (var i = classes.length - 1; i >= 0; i--) {
 								var name = classes[i];
 								if (name) {
@@ -304,7 +304,7 @@
 								// Merge classes from attributes and identity
 								var classes = attributes.class.split(' ');
 								types.append(classes, identity.class.split(' '));
-								classes = tools.unique(classes);
+								classes = types.unique(classes);
 								attributes.class = classes.join(' ');
 							} else {
 								attributes.class = identity.class;
