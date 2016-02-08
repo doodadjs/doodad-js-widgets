@@ -34,7 +34,7 @@
 	exports.add = function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES[MODULE_NAME] = {
-			type: null,
+			type: 'Package',
 			version: '0b',
 			namespaces: null,
 			dependencies: ['Doodad.Types', 'Doodad.Tools', 'Doodad.Modules'],
@@ -47,16 +47,15 @@
 					modules = doodad.Modules;
 				
 				var fromSource = root.getOptions().settings.fromSource,
-					promise;
+					files = [];
 				
-				promise = modules.load(MODULE_NAME, (fromSource ? (global.process ? 'src/common/Widgets.js' : 'Widgets.js') : 'Widgets.min.js'), _options);
+				files.push(fromSource ? (global.process ? 'src/common/Widgets.js' : 'Widgets.js') : 'Widgets.min.js');
+				
 				if (typeof process !== 'object') {
-					promise = promise.then(function() {
-						return modules.load(MODULE_NAME, (fromSource ? 'Client_Widgets.js' : 'Client_Widgets.min.js'), _options);
-					});
+					files.push(fromSource ? 'Client_Widgets.js' : 'Client_Widgets.min.js');
 				};
 				
-				return promise;
+				return modules.load(MODULE_NAME, files, _options);
 			},
 		};
 		return DD_MODULES;
