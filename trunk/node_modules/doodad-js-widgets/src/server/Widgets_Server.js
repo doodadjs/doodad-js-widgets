@@ -1,5 +1,6 @@
+//! REPLACE_BY("// Copyright 2016 Claude Petit, licensed under Apache License version 2.0\n")
 // dOOdad - Object-oriented programming framework
-// File: index.js - Widgets base module startup file
+// File: Widgets_Server.js - Widgets base types (server-side)
 // Project home: https://sourceforge.net/projects/doodad-js/
 // Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
 // Author: Claude Petit, Quebec city
@@ -20,6 +21,7 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //	See the License for the specific language governing permissions and
 //	limitations under the License.
+//! END_REPLACE()
 
 (function() {
 	var global = this;
@@ -29,37 +31,45 @@
 		module.exports = exports;
 	};
 	
-	var MODULE_NAME = 'doodad-js-widgets';
-	
 	exports.add = function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
-		DD_MODULES[MODULE_NAME] = {
-			type: 'Package',
+		DD_MODULES['Doodad.Widgets.Server'] = {
+			type: null,
 			version: '0.3.0a',
-			namespaces: null,
-			dependencies: ['Doodad.Types', 'Doodad.Tools', 'Doodad.Modules'],
-			exports: exports,
+			namespaces: ['MixIns'],
+			dependencies: [
+				'Doodad.Widgets',
+			],
 			
 			create: function create(root, /*optional*/_options) {
 				"use strict";
 				
 				var doodad = root.Doodad,
-					modules = doodad.Modules;
+					widgets = doodad.Widgets,
+					widgetsMixIns = widgets.MixIns;
 				
-				var fromSource = root.getOptions().settings.fromSource,
-					files = [];
 				
-				files.push(fromSource ? (global.process ? 'src/common/Widgets.js' : 'Widgets.js') : 'Widgets.min.js');
+				//==================================
+				// Widget base
+				//==================================
 				
-				if (typeof process === 'object') {
-					files.push(fromSource ? 'src/server/Widgets_Server.js' : 'Widgets_Server.min.js');
-				} else {
-					files.push(fromSource ? 'Widgets_Client.js' : 'Widgets_Client.min.js');
-				};
+				widgets.REGISTER(doodad.BASE(doodad.Object.$extend(
+										widgetsMixIns.Render,
+				{
+					$TYPE_NAME: 'Widget',
+				})));
 				
-				return modules.load(MODULE_NAME, files, _options);
+				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
+										widgetsMixIns.Attributes,
+										widgetsMixIns.Identities,
+										widgetsMixIns.Styles,
+				{
+					$TYPE_NAME: 'HtmlWidget',
+				})));
+				
 			},
 		};
+		
 		return DD_MODULES;
 	};
 	

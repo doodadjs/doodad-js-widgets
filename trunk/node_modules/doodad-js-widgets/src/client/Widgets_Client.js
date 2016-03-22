@@ -1,6 +1,6 @@
 //! REPLACE_BY("// Copyright 2016 Claude Petit, licensed under Apache License version 2.0\n")
 // dOOdad - Object-oriented programming framework
-// File: Client_Widgets.js - Widgets base types (client-side)
+// File: Widgets_Client.js - Widgets base types (client-side)
 // Project home: https://sourceforge.net/projects/doodad-js/
 // Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
 // Author: Claude Petit, Quebec city
@@ -33,20 +33,20 @@
 	
 	exports.add = function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
-		DD_MODULES['Doodad.Client.Widgets'] = {
+		DD_MODULES['Doodad.Widgets.Client'] = {
 			type: null,
-			version: '0.2.0d',
-			namespaces: ['MixIns'],
+			version: '0.3.0a',
+			namespaces: null,
 			dependencies: [
 				{
 					name: 'Doodad',
-					version: '2.0.0',
+					version: '2.2.0',
 				}, 
 				'Doodad.Widgets', 
 				'Doodad.Client', 
 				{
 					name: 'Doodad.Client.IO',
-					version: '0.4.0',
+					version: '1.0.0',
 					optional: true,
 				},
 			],
@@ -66,20 +66,18 @@
 					interfaces = doodad.Interfaces,
 					exceptions = doodad.Exceptions,
 					mixIns = doodad.MixIns,
-					widgetsMixIns = widgets.MixIns,
-					clientWidgets = client.Widgets,
-					clientWidgetsMixIns = clientWidgets.MixIns;
+					widgetsMixIns = widgets.MixIns;
 				
 				
 				//==================================
 				// Mix-ins
 				//==================================
 				
-				clientWidgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
 				{
 					$TYPE_NAME: 'Attributes',
 					
-					applyHtmlAttributes: doodad.PROTECTED(function applyHtmlAttributes(/*optional*/cssClassNames, elements) {
+					applyAttributes: doodad.PROTECTED(function applyAttributes(/*optional*/cssClassNames, elements) {
 						if (client.isElement(elements)) {
 							elements = [elements];
 						};
@@ -89,7 +87,7 @@
 							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
 						};
 
-						var attributes = this.getHtmlAttributes(cssClassNames),
+						var attributes = this.getAttributes(cssClassNames),
 							keys = types.keys(attributes),
 							keysLen = keys.length,
 							elementsLen = elements.length,
@@ -111,7 +109,7 @@
 					}),
 				})));
 				
-				clientWidgetsMixIns.REGISTER(doodad.MIX_IN(clientWidgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
 												widgetsMixIns.Identities,
 				{
 					$TYPE_NAME: 'Identities',
@@ -126,7 +124,7 @@
 							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
 						};
 
-						var attributes = this.getHtmlAttributes(cssClassNames),
+						var attributes = this.getAttributes(cssClassNames),
 							elementsLen = elements.length,
 							element,
 							classes;
@@ -146,17 +144,17 @@
 								element.setAttribute('name', attributes.name);
 							};
 							
-							if (types.isNothing(attributes.class)) {
+							if (types.isNothing(attributes['class'])) {
 								element.removeAttribute('class');
 							} else {
-								element.setAttribute('class', attributes.class);
+								element.setAttribute('class', attributes['class']);
 							};
 							
 						};
 					}),
 				})));
 				
-				clientWidgetsMixIns.REGISTER(doodad.MIX_IN(clientWidgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
 												widgetsMixIns.Styles,
 				{
 					$TYPE_NAME: 'Styles',
@@ -195,7 +193,7 @@
 					}),
 				})));
 
-				clientWidgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Render.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Render.$extend(
 				{
 					$TYPE_NAME: 'Render',
 				
@@ -242,16 +240,16 @@
 				// Widget base
 				//==================================
 				
-				clientWidgetsMixIns.REGISTER(doodad.BASE(doodad.Object.$extend(
-										clientWidgetsMixIns.Render,
+				widgets.REGISTER(doodad.BASE(doodad.Object.$extend(
+										widgetsMixIns.Render,
 				{
 					$TYPE_NAME: 'Widget',
 				})));
 				
-				clientWidgets.REGISTER(doodad.BASE(clientWidgetsMixIns.Widget.$extend(
-										clientWidgetsMixIns.Attributes,
-										clientWidgetsMixIns.Identities,
-										clientWidgetsMixIns.Styles,
+				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
+										widgetsMixIns.Attributes,
+										widgetsMixIns.Identities,
+										widgetsMixIns.Styles,
 										mixIns.JsEvents,
 				{
 					$TYPE_NAME: 'HtmlWidget',

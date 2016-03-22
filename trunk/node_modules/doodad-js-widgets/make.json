@@ -34,6 +34,12 @@
 						"destination": "%PACKAGEDIR%/Widgets.min.js",
 						"runDirectives": true
 					},
+					{
+						"class": "Make.File.Javascript",
+						"source": "%SOURCEDIR%/server/Widgets_Server.js",
+						"destination": "%PACKAGEDIR%/Widgets_Server.min.js",
+						"runDirectives": true
+					},
 					
 					{
 						"class": "Make.Task",
@@ -53,13 +59,13 @@
 					},
 					{
 						"class": "Make.File.Copy",
-						"source": "%SOURCEDIR%/client/Client_Widgets.js",
-						"destination": "%INSTALLDIR%/%PACKAGENAME%/Client_Widgets.js"
+						"source": "%SOURCEDIR%/client/Widgets_Client.js",
+						"destination": "%INSTALLDIR%/%PACKAGENAME%/Widgets_Client.js"
 					},
 					{
 						"class": "Make.File.Javascript",
-						"source": "%SOURCEDIR%/client/Client_Widgets.js",
-						"destination": "%INSTALLDIR%/%PACKAGENAME%/Client_Widgets.min.js",
+						"source": "%SOURCEDIR%/client/Widgets_Client.js",
+						"destination": "%INSTALLDIR%/%PACKAGENAME%/Widgets_Client.min.js",
 						"runDirectives": true
 					},
 					{

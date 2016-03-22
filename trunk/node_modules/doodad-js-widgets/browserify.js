@@ -1,5 +1,5 @@
 // dOOdad - Object-oriented programming framework
-// File: main.js - Module startup file for 'browserify'.
+// File: browserify.js - Module startup file for 'browserify'.
 // Project home: https://sourceforge.net/projects/doodad-js/
 // Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
 // Author: Claude Petit, Quebec city
@@ -28,7 +28,7 @@ module.exports = {
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES['doodad-js-widgets'] = {
 			type: null,
-			version: '0.2.0d',
+			version: '0.3.0a',
 			namespaces: null,
 			dependencies: null,
 			exports: module.exports,
@@ -42,8 +42,8 @@ module.exports = {
 				
 				var modules = {};
 				
-				require("./dist/doodad-js-widgets/Widgets.js").add(modules);
-				require("./dist/doodad-js-widgets/Client_Widgets.js").add(modules);
+				require("./dist/doodad-js-widgets/Widgets.min.js").add(modules);
+				require("./dist/doodad-js-widgets/Client_Widgets.min.js").add(modules);
 				
 				return root.Doodad.Namespaces.loadNamespaces(modules, null, config, false);
 			},
