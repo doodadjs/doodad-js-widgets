@@ -35,14 +35,9 @@
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES['Doodad.Widgets'] = {
 			type: null,
-			version: '0.3.0a',
+			//! INSERT("version:'" + VERSION('doodad-js-widgets') + "',")
 			namespaces: ['MixIns'],
-			dependencies: [
-				{
-					name: 'Doodad.IO',
-					version: '1.0.0',
-				}, 
-			],
+			dependencies: null,
 			
 			create: function create(root, /*optional*/_options) {
 				"use strict";

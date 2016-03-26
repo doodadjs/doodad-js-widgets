@@ -1,6 +1,5 @@
-//! REPLACE_BY("// Copyright 2016 Claude Petit, licensed under Apache License version 2.0\n")
 // dOOdad - Object-oriented programming framework
-// File: Widgets_Server.js - Widgets base types (server-side)
+// File: index.js - Widgets base module startup file
 // Project home: https://sourceforge.net/projects/doodad-js/
 // Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
 // Author: Claude Petit, Quebec city
@@ -21,7 +20,6 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //	See the License for the specific language governing permissions and
 //	limitations under the License.
-//! END_REPLACE()
 
 (function() {
 	var global = this;
@@ -31,45 +29,48 @@
 		module.exports = exports;
 	};
 	
+	var MODULE_NAME = 'doodad-js-widgets';
+	
 	exports.add = function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
-		DD_MODULES['Doodad.Widgets.Server'] = {
-			type: null,
+		DD_MODULES[MODULE_NAME] = {
+			type: 'Package',
 			//! INSERT("version:'" + VERSION('doodad-js-widgets') + "',")
-			namespaces: ['MixIns'],
+			namespaces: null,
 			dependencies: [
-				'Doodad.Widgets',
+				{
+					name: 'doodad-js',
+					//! INSERT("version:'" + VERSION('doodad-js') + "',")
+				}, 
+				{
+					name: 'doodad-js-io',
+					//! INSERT("version:'" + VERSION('doodad-js-io') + "',")
+				}, 
 			],
 			
 			create: function create(root, /*optional*/_options) {
 				"use strict";
 				
 				var doodad = root.Doodad,
-					widgets = doodad.Widgets,
-					widgetsMixIns = widgets.MixIns;
+					modules = doodad.Modules;
 				
+				var fromSource = root.getOptions().settings.fromSource,
+					files = [];
 				
-				//==================================
-				// Widget base
-				//==================================
+				files.push(fromSource ? (global.process ? 'src/common/Widgets.js' : 'Widgets.js') : 'Widgets.min.js');
 				
-				widgets.REGISTER(doodad.BASE(doodad.Object.$extend(
-										widgetsMixIns.Render,
-				{
-					$TYPE_NAME: 'Widget',
-				})));
+				if (typeof process === 'object') {
+					files.push(fromSource ? 'src/server/Widgets_Server.js' : 'Widgets_Server.min.js');
+				} else {
+					files.push(fromSource ? 'Widgets_Client.js' : 'Widgets_Client.min.js');
+				};
 				
-				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
-										widgetsMixIns.Attributes,
-										widgetsMixIns.Identities,
-										widgetsMixIns.Styles,
-				{
-					$TYPE_NAME: 'HtmlWidget',
-				})));
-				
+				return modules.load(MODULE_NAME, files, _options)
+					.then(function() {
+						// Returns nothing
+					});
 			},
 		};
-		
 		return DD_MODULES;
 	};
 	

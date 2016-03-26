@@ -35,20 +35,10 @@
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES['Doodad.Widgets.Client'] = {
 			type: null,
-			version: '0.3.0a',
+			//! INSERT("version:'" + VERSION('doodad-js-widgets') + "',")
 			namespaces: null,
 			dependencies: [
-				{
-					name: 'Doodad',
-					version: '2.2.0',
-				}, 
 				'Doodad.Widgets', 
-				'Doodad.Client', 
-				{
-					name: 'Doodad.Client.IO',
-					version: '1.0.0',
-					optional: true,
-				},
 			],
 			
 			create: function create(root, /*optional*/_options) {
