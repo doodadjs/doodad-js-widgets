@@ -193,7 +193,7 @@
 					$TYPE_NAME: 'Render',
 				
 					render: doodad.OVERRIDE(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(doodad.BEFORE(widgetsMixIns.Render, function render(/*optional*/container) {
-						root.DD_ASSERT && root.DD_ASSERT(types.isNothing(container) || types.isString(container) || client.isElement(container) || types._implements(container, ioMixIns.HtmlOutput), "Invalid container.");
+						root.DD_ASSERT && root.DD_ASSERT(types.isNothing(container) || types.isString(container) || client.isElement(container) || types._implements(container, io.HtmlOutputStream), "Invalid container.");
 
 						if (!this.onPreRender()) {
 							if (this.stream) {
@@ -203,7 +203,7 @@
 							
 							if (types.isNothing(container)) {
 								container = this.stream;
-								root.DD_ASSERT && root.DD_ASSERT(types._implements(container, ioMixIns.HtmlOutput), "Invalid container.");
+								root.DD_ASSERT && root.DD_ASSERT(types._implements(container, io.HtmlOutputStream), "Invalid container.");
 							};
 							
 							if (types.isString(container)) {
