@@ -82,7 +82,7 @@
 						if (root.DD_ASSERT) {
 							root.DD_ASSERT(types.isArray(cssClassNames), "Invalid css class names.");
 							root.DD_ASSERT(tools.every(cssClassNames, function(name) {
-								return types.hasKey(this.__attributes, name)
+								return types.has(this.__attributes, name)
 							}, this), "Invalid css class names.");
 						};
 						
@@ -185,7 +185,7 @@
 						} else {
 							cssClassName = this.validateCssClassNames(cssClassName)[0];
 							var preserved = this.getPreserved('__attributes');
-							if (types.hasKey(preserved, cssClassName)) {
+							if (types.has(preserved, cssClassName)) {
 								this.__attributes[cssClassName] = preserved[cssClassName];
 							} else {
 								delete this.__attributes[cssClassName];
@@ -334,7 +334,7 @@
 							this.restorePreserved('__identities');
 						} else {
 							var preserved = this.getPreserved('__identities');
-							if (types.hasKey(preserved, cssClassName)) {
+							if (types.has(preserved, cssClassName)) {
 								this.__identities[cssClassName] = preserved[cssClassName];
 							} else {
 								delete this.__identities[cssClassName];
@@ -457,7 +457,7 @@
 							this.restorePreserved('__styles');
 						} else {
 							var preserved = this.getPreserved('__styles');
-							if (types.hasKey(preserved, cssClassName)) {
+							if (types.has(preserved, cssClassName)) {
 								this.__styles[cssClassName] = preserved[cssClassName];
 							} else {
 								delete this.__styles[cssClassName];
