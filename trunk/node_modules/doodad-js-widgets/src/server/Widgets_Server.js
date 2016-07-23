@@ -55,6 +55,28 @@
 					widgetsMixIns = widgets.MixIns;
 				
 				
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
+				{
+					$TYPE_NAME: 'Attributes',
+				})));
+					
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+										widgetsMixIns.IdentitiesBase,
+				{
+					$TYPE_NAME: 'Identities',
+				})));
+					
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+										widgetsMixIns.StylesBase,
+				{
+					$TYPE_NAME: 'Styles',
+				})));
+					
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
+				{
+					$TYPE_NAME: 'Render',
+				})));
+				
 				//==================================
 				// Widget base
 				//==================================

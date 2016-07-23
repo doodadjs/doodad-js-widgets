@@ -64,9 +64,9 @@
 				// Mix-ins
 				//==================================
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
+				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
 				{
-					$TYPE_NAME: 'Attributes',
+					$TYPE_NAME: 'AttributesBase',
 					
 					__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -194,11 +194,11 @@
 						
 						this._super(cssClassName);
 					})),
-				})));
+				}))));
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
-					$TYPE_NAME: 'Identities',
+					$TYPE_NAME: 'IdentitiesBase',
 					
 					__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -343,12 +343,12 @@
 
 						this._super(cssClassName);
 					}),
-				})));
+				}))));
 				
 				var __styleRegEx__ = /([a-z0-9]+)([A-Z])?/g;
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
-					$TYPE_NAME: 'Styles',
+					$TYPE_NAME: 'StylesBase',
 					
 					__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -466,18 +466,18 @@
 						
 						this._super(cssClassName);
 					}),
-				})));
+				}))));
 
-				widgets.RenderEvent = doodad.Event.$inherit(
+				widgets.RenderEvent = types.INIT(doodad.Event.$inherit(
 				/*typeProto*/
 				{
 					$TYPE_NAME: 'RenderEvent',
-				});
+				}));
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
+				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
 											mixIns.Events,
 				{
-					$TYPE_NAME: 'Render',
+					$TYPE_NAME: 'RenderBase',
 				
 					onPreRender: doodad.EVENT(true), // function onPreRender(ev)
 					onRender: doodad.EVENT(false), // function onRender(ev)
@@ -517,7 +517,7 @@
 					acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()
 					
 					release: doodad.PROTECTED(doodad.METHOD()), // function release()
-				})));
+				}))));
 
 			},
 		};
