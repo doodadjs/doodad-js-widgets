@@ -68,7 +68,7 @@
 				// Mix-ins
 				//==================================
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
 					$TYPE_NAME: 'Attributes',
 					
@@ -105,7 +105,7 @@
 				})));
 				
 				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-												widgetsMixIns.Identities,
+												widgetsMixIns.IdentitiesBase,
 				{
 					$TYPE_NAME: 'Identities',
 					
@@ -150,7 +150,7 @@
 				})));
 				
 				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-												widgetsMixIns.Styles,
+												widgetsMixIns.StylesBase,
 				{
 					$TYPE_NAME: 'Styles',
 					
@@ -188,11 +188,11 @@
 					}),
 				})));
 
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Render.$extend(
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
 				{
 					$TYPE_NAME: 'Render',
 				
-					render: doodad.OVERRIDE(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(doodad.BEFORE(widgetsMixIns.Render, function render(/*optional*/container) {
+					render: doodad.OVERRIDE(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(doodad.BEFORE(widgetsMixIns.RenderBase, function render(/*optional*/container) {
 						root.DD_ASSERT && root.DD_ASSERT(types.isNothing(container) || types.isString(container) || client.isElement(container) || types._implements(container, io.HtmlOutputStream), "Invalid container.");
 
 						if (!this.onPreRender()) {
