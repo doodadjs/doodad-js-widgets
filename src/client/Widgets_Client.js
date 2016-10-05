@@ -1,8 +1,9 @@
+//! BEGIN_MODULE()
+
 //! REPLACE_BY("// Copyright 2016 Claude Petit, licensed under Apache License version 2.0\n", true)
-// dOOdad - Object-oriented programming framework
+// doodad-js - Object-oriented programming framework
 // File: Widgets_Client.js - Widgets base types (client-side)
-// Project home: https://sourceforge.net/projects/doodad-js/
-// Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
+// Project home: https://github.com/doodadjs/
 // Author: Claude Petit, Quebec city
 // Contact: doodadjs [at] gmail.com
 // Note: I'm still in alpha-beta stage, so expect to find some bugs or incomplete parts !
@@ -23,30 +24,16 @@
 //	limitations under the License.
 //! END_REPLACE()
 
-(function() {
-	var global = this;
-
-	var exports = {};
-	
-	//! BEGIN_REMOVE()
-	if ((typeof process === 'object') && (typeof module === 'object')) {
-	//! END_REMOVE()
-		//! IF_DEF("serverSide")
-			module.exports = exports;
-		//! END_IF()
-	//! BEGIN_REMOVE()
-	};
-	//! END_REMOVE()
-	
-	exports.add = function add(DD_MODULES) {
+module.exports = {
+	add: function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES['Doodad.Widgets.Client'] = {
-			version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE() */,
+			version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
 			dependencies: [
 				'Doodad.Widgets', 
 			],
 			
-			create: function create(root, /*optional*/_options) {
+			create: function create(root, /*optional*/_options, _shared) {
 				"use strict";
 				
 				var doodad = root.Doodad,
@@ -192,36 +179,24 @@
 				{
 					$TYPE_NAME: 'Render',
 				
-					render: doodad.OVERRIDE(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(doodad.BEFORE(widgetsMixIns.RenderBase, function render(/*optional*/container) {
-						root.DD_ASSERT && root.DD_ASSERT(types.isNothing(container) || types.isString(container) || client.isElement(container) || types._implements(container, io.HtmlOutputStream), "Invalid container.");
-
-						if (!this.onPreRender()) {
-							if (this.stream) {
-								this.release();
-								this.stream.clear();
-							};
-							
-							if (types.isNothing(container)) {
-								container = this.stream;
-								root.DD_ASSERT && root.DD_ASSERT(types._implements(container, io.HtmlOutputStream), "Invalid container.");
-							};
-							
-							if (types.isString(container)) {
-								container = global.document.getElementById(container);
-							};
-							
-							if (client.isElement(container)) {
-								container = new clientIO.DomOutputStream({
-									element: container,
-								});
-							};
-							
-							this._super(container);
+					setStream: doodad.OVERRIDE(function setStream(stream) {
+						if (types.isString(stream)) {
+							stream = global.document.getElementById(stream);
 						};
-					})))),
-					acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire(stream) {
+						
+						if (client.isElement(stream)) {
+							stream = new clientIO.DomOutputStream({
+								element: stream,
+							});
+						};
+						
+						root.DD_ASSERT && root.DD_ASSERT(types._implements(stream, io.HtmlOutputStream), "Invalid stream.");
+
+						this._super(stream);
+					}),
+					acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
 						if (types._instanceof(this.stream, clientIO.DomOutputStream)) {
-							this._super(stream);
+							this._super();
 						};
 					})),
 					release: doodad.OVERRIDE(doodad.CALL_FIRST(function release() {
@@ -252,28 +227,7 @@
 				
 			},
 		};
-		
 		return DD_MODULES;
-	};
-	
-	
-	//! BEGIN_REMOVE()
-	if ((typeof process !== 'object') || (typeof module !== 'object')) {
-	//! END_REMOVE()
-		//! IF_UNDEF("serverSide")
-			// <PRB> export/import are not yet supported in browsers
-			global.DD_MODULES = exports.add(global.DD_MODULES);
-		//! END_IF()
-	//! BEGIN_REMOVE()
-	};
-	//! END_REMOVE()
-}).call(
-	//! BEGIN_REMOVE()
-	(typeof window !== 'undefined') ? window : ((typeof global !== 'undefined') ? global : this)
-	//! END_REMOVE()
-	//! IF_DEF("serverSide")
-	//! 	INJECT("global")
-	//! ELSE()
-	//! 	INJECT("window")
-	//! END_IF()
-);
+	},
+};
+//! END_MODULE()

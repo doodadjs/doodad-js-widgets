@@ -1,8 +1,9 @@
+//! BEGIN_MODULE()
+
 //! REPLACE_BY("// Copyright 2016 Claude Petit, licensed under Apache License version 2.0\n", true)
-// dOOdad - Object-oriented programming framework
+// doodad-js - Object-oriented programming framework
 // File: Widgets.js - Widgets base types
-// Project home: https://sourceforge.net/projects/doodad-js/
-// Trunk: svn checkout svn://svn.code.sf.net/p/doodad-js/code/trunk doodad-js-code
+// Project home: https://github.com/doodadjs/
 // Author: Claude Petit, Quebec city
 // Contact: doodadjs [at] gmail.com
 // Note: I'm still in alpha-beta stage, so expect to find some bugs or incomplete parts !
@@ -23,28 +24,14 @@
 //	limitations under the License.
 //! END_REPLACE()
 
-(function() {
-	var global = this;
-
-	var exports = {};
-	
-	//! BEGIN_REMOVE()
-	if ((typeof process === 'object') && (typeof module === 'object')) {
-	//! END_REMOVE()
-		//! IF_DEF("serverSide")
-			module.exports = exports;
-		//! END_IF()
-	//! BEGIN_REMOVE()
-	};
-	//! END_REMOVE()
-	
-	exports.add = function add(DD_MODULES) {
+module.exports = {
+	add: function add(DD_MODULES) {
 		DD_MODULES = (DD_MODULES || {});
 		DD_MODULES['Doodad.Widgets'] = {
-			version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE() */,
+			version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
 			namespaces: ['MixIns'],
 			
-			create: function create(root, /*optional*/_options) {
+			create: function create(root, /*optional*/_options, _shared) {
 				"use strict";
 				
 				var doodad = root.Doodad,
@@ -468,12 +455,6 @@
 					}),
 				}))));
 
-				widgets.RenderEvent = types.INIT(doodad.Event.$inherit(
-				/*typeProto*/
-				{
-					$TYPE_NAME: 'RenderEvent',
-				}));
-				
 				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
 											mixIns.Events,
 				{
@@ -483,36 +464,45 @@
 					onRender: doodad.EVENT(false), // function onRender(ev)
 					onPostRender: doodad.EVENT(false), // function onPostRender(ev)
 					
-					stream: null,
+					stream: doodad.PUBLIC(doodad.READ_ONLY(null)),
+					__rendered: doodad.PROTECTED(false),
 					
-					render: doodad.PUBLIC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render(/*optional*/stream) {
-						root.DD_ASSERT && root.DD_ASSERT(types.isNothing(stream) || types._implements(stream, ioMixIns.TextOutput), "Invalid stream.");
+					setStream: doodad.PUBLIC(function setStream(stream) {
+						root.DD_ASSERT && root.DD_ASSERT(types._implements(stream, ioMixIns.TextOutput), "Invalid stream.");
+
+						if (this.__rendered) {
+							this.__rendered = false;
+							this.release();
+							this.stream.clear();
+						};
+						
+						_shared.setAttribute(this, 'stream', stream);
+					}),
+					
+					render: doodad.PUBLIC(doodad.ASYNC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render() {
+						root.DD_ASSERT && root.DD_ASSERT(types._implements(this.stream, ioMixIns.TextOutput), "Invalid stream.");
+
+						if (this.__rendered) {
+							this.__rendered = false;
+							this.release();
+							this.stream.clear();
+						};
 
 						if (!this.onPreRender()) {
-							if (this.stream) {
-								this.release();
-								this.stream.clear();
-							};
-							
-							if (types.isNothing(stream)) {
-								stream = this.stream;
-								root.DD_ASSERT && root.DD_ASSERT(types._implements(stream, ioMixIns.TextOutput), "Invalid stream.");
-							};
-							
-							this._super(stream);
-							
-							var ev = new widgets.RenderEvent({
-								stream: stream,
-							});
-							this.onRender(ev);
-							
-							stream.flush();
-							this.stream = stream;
-							this.acquire();
-							
-							this.onPostRender();
+							return this._super()
+								.then(function renderPromise() {
+									this.__rendered = true;
+									
+									this.onRender(new doodad.Event());
+									
+									this.stream.flush();
+									
+									this.acquire();
+									
+									this.onPostRender();
+								}, null, this);
 						};
-					}))),
+					})))),
 					
 					acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()
 					
@@ -521,27 +511,7 @@
 
 			},
 		};
-		
 		return DD_MODULES;
-	};
-	
-	//! BEGIN_REMOVE()
-	if ((typeof process !== 'object') || (typeof module !== 'object')) {
-	//! END_REMOVE()
-		//! IF_UNDEF("serverSide")
-			// <PRB> export/import are not yet supported in browsers
-			global.DD_MODULES = exports.add(global.DD_MODULES);
-		//! END_IF()
-	//! BEGIN_REMOVE()
-	};
-	//! END_REMOVE()
-}).call(
-	//! BEGIN_REMOVE()
-	(typeof window !== 'undefined') ? window : ((typeof global !== 'undefined') ? global : this)
-	//! END_REMOVE()
-	//! IF_DEF("serverSide")
-	//! 	INJECT("global")
-	//! ELSE()
-	//! 	INJECT("window")
-	//! END_IF()
-);
+	},
+};
+//! END_MODULE()

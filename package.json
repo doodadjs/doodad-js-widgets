@@ -1,6 +1,6 @@
 {
   "name": "doodad-js-widgets",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "stage": "a",
   "description": "doodad-js Widgets base (alpha)",
   "files": [
@@ -10,5 +10,13 @@
     "doodad-js",
     "widgets"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doodadjs/doodad-js-widgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/doodadjs/doodad-js-widgets/issues",
+    "email": "doodadjs@gmail.com"
+  },
   "tonicExampleFilename": "tonic.js"
 }
