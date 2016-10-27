@@ -1,8 +1,7 @@
 {
   "name": "doodad-js-widgets",
-  "version": "0.8.0",
-  "stage": "a",
   "description": "doodad-js Widgets base (alpha)",
+  "version": "0.0.0",
   "files": [
 	"tonic.js"
   ],
