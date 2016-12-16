@@ -54,6 +54,7 @@ module.exports = {
 				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
 				{
 					$TYPE_NAME: 'AttributesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesBaseMixIn')), true) */,
 					
 					__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -186,6 +187,7 @@ module.exports = {
 				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
 					$TYPE_NAME: 'IdentitiesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesBaseMixIn')), true) */,
 					
 					__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -336,6 +338,7 @@ module.exports = {
 				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
 					$TYPE_NAME: 'StylesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesBaseMixIn')), true) */,
 					
 					__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
@@ -459,6 +462,7 @@ module.exports = {
 											mixIns.Events,
 				{
 					$TYPE_NAME: 'RenderBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderBaseMixIn')), true) */,
 				
 					onPreRender: doodad.EVENT(true), // function onPreRender(ev)
 					onRender: doodad.EVENT(false), // function onRender(ev)

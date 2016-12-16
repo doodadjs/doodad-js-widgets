@@ -58,6 +58,7 @@ module.exports = {
 				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
 					$TYPE_NAME: 'Attributes',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
 					
 					applyAttributes: doodad.PROTECTED(function applyAttributes(/*optional*/cssClassNames, elements) {
 						if (client.isElement(elements)) {
@@ -95,6 +96,7 @@ module.exports = {
 												widgetsMixIns.IdentitiesBase,
 				{
 					$TYPE_NAME: 'Identities',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
 					
 					applyIdentity: doodad.PROTECTED(function applyIdentity(/*optional*/cssClassNames, elements) {
 						if (client.isElement(elements)) {
@@ -140,6 +142,7 @@ module.exports = {
 												widgetsMixIns.StylesBase,
 				{
 					$TYPE_NAME: 'Styles',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
 					
 					applyStyles: doodad.PROTECTED(function applyStyles(/*optional*/cssClassNames, elements) {
 						if (client.isElement(elements)) {
@@ -178,6 +181,7 @@ module.exports = {
 				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
 				{
 					$TYPE_NAME: 'Render',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
 				
 					setStream: doodad.OVERRIDE(function setStream(stream) {
 						if (types.isString(stream)) {
@@ -214,6 +218,7 @@ module.exports = {
 										widgetsMixIns.Render,
 				{
 					$TYPE_NAME: 'Widget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
 				})));
 				
 				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
@@ -223,6 +228,7 @@ module.exports = {
 										mixIns.JsEvents,
 				{
 					$TYPE_NAME: 'HtmlWidget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
 				})));
 				
 			},
