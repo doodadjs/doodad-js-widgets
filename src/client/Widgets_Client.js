@@ -36,7 +36,7 @@ module.exports = {
 			create: function create(root, /*optional*/_options, _shared) {
 				"use strict";
 				
-				var doodad = root.Doodad,
+				const doodad = root.Doodad,
 					widgets = doodad.Widgets,
 					types = doodad.Types,
 					tools = doodad.Tools,
@@ -70,22 +70,22 @@ module.exports = {
 							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
 						};
 
-						var attributes = this.getAttributes(cssClassNames),
+						const attributes = this.getAttributes(cssClassNames),
 							keys = types.keys(attributes),
 							keysLen = keys.length,
-							elementsLen = elements.length,
-							name,
-							val;
+							elementsLen = elements.length;
 
-						for (var i = 0; i < keysLen; i++) {
-							name = keys[i];
-							val = attributes[name];
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+							const val = attributes[name];
 
-							for (var j = 0; j < elementsLen; j++) {
-								if (types.isNothing(val)) {
-									elements[j].removeAttribute(name);
-								} else {
-									elements[j].setAttribute(name, val);
+							for (let j = 0; j < elementsLen; j++) {
+								if (types.has(elements, j)) {
+									if (types.isNothing(val)) {
+										elements[j].removeAttribute(name);
+									} else {
+										elements[j].setAttribute(name, val);
+									};
 								};
 							};
 						};
@@ -108,32 +108,31 @@ module.exports = {
 							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
 						};
 
-						var attributes = this.getAttributes(cssClassNames),
-							elementsLen = elements.length,
-							element,
-							classes;
+						const attributes = this.getAttributes(cssClassNames),
+							elementsLen = elements.length;
 
-						for (var i = 0; i < elementsLen; i++) {
-							element = elements[i];
+						for (let i = 0; i < elementsLen; i++) {
+							if (types.has(elements, i)) {
+								const element = elements[i];
 						
-							if (types.isNothing(attributes.id)) {
-								element.removeAttribute('id');
-							} else {
-								element.setAttribute('id', attributes.id);
-							};
+								if (types.isNothing(attributes.id)) {
+									element.removeAttribute('id');
+								} else {
+									element.setAttribute('id', attributes.id);
+								};
 							
-							if (types.isNothing(attributes.name)) {
-								element.removeAttribute('name');
-							} else {
-								element.setAttribute('name', attributes.name);
-							};
+								if (types.isNothing(attributes.name)) {
+									element.removeAttribute('name');
+								} else {
+									element.setAttribute('name', attributes.name);
+								};
 							
-							if (types.isNothing(attributes['class'])) {
-								element.removeAttribute('class');
-							} else {
-								element.setAttribute('class', attributes['class']);
+								if (types.isNothing(attributes['class'])) {
+									element.removeAttribute('class');
+								} else {
+									element.setAttribute('class', attributes['class']);
+								};
 							};
-							
 						};
 					}),
 				})));
@@ -154,25 +153,25 @@ module.exports = {
 							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
 						};
 
-						var styles = this.getStyles(cssClassNames),
+						const styles = this.getStyles(cssClassNames),
 							keys = types.keys(styles),
 							keysLen = keys.length,
-							elementsLen = elements.length,
-							name,
-							val;
+							elementsLen = elements.length;
 
-						for (var i = 0; i < keysLen; i++) {
-							name = keys[i];
-							val = styles[name];
-							
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+
+							let val = styles[name];
 							if (types.isNothing(val)) {
 								val = null;
 							} else if (types.isFunction(val.toString)) {
 								val = val.toString();
 							};
 
-							for (var j = 0; j < elementsLen; j++) {
-								elements[j].style[name] = val;
+							for (let j = 0; j < elementsLen; j++) {
+								if (types.has(elements, j)) {
+									elements[j].style[name] = val;
+								};
 							};
 						};
 					}),

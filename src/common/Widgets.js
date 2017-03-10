@@ -34,7 +34,7 @@ module.exports = {
 			create: function create(root, /*optional*/_options, _shared) {
 				"use strict";
 				
-				var doodad = root.Doodad,
+				const doodad = root.Doodad,
 					widgets = doodad.Widgets,
 					types = doodad.Types,
 					tools = doodad.Tools,
@@ -80,27 +80,29 @@ module.exports = {
 					getAttributes: doodad.PUBLIC(function getAttributes(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
 						
-						var cssClassNamesLen = cssClassNames.length,
-							attributes, 
-							cssClassName;
+						const cssClassNamesLen = cssClassNames.length;
+
+						let attributes;
 
 						if (cssClassNamesLen === 1) {
-							cssClassName = cssClassNames[0];
+							const cssClassName = cssClassNames[0];
 							attributes = this.__attributes[cssClassName];
 							if (!attributes) {
 								this.__attributes[cssClassName] = attributes = {};
 							};
 						} else {
 							attributes = {};
-							var classes = [];
-							for (var i = 0; i < cssClassNamesLen; i++) {
-								cssClassName = cssClassNames[i];
-								var attrs = this.__attributes[cssClassName];
-								if (attrs) {
-									if (attrs['class']) {
-										types.append(classes, attrs['class'].split(' '));
+							const classes = [];
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__attributes[cssClassName];
+									if (attrs) {
+										if (attrs['class']) {
+											types.append(classes, attrs['class'].split(' '));
+										};
+										attributes = types.extend(attributes, attrs);
 									};
-									attributes = types.extend(attributes, attrs);
 								};
 							};
 							if (classes.length) {
@@ -115,36 +117,37 @@ module.exports = {
 						
 						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(attributes), "Invalid attributes object.");
 						
-						var cssClassNamesLen = cssClassNames.length,
-							cssClassName;
+						const cssClassNamesLen = cssClassNames.length;
 
-						if (attributes['class']) {
-							var classes = attributes['class'].split(' ');
-							classes = types.unique(classes);
-							for (var i = classes.length - 1; i >= 0; i--) {
-								var name = classes[i];
+						if (attributes.class) {
+							const classes = types.unique(attributes['class'].split(' '));
+							for (let i = classes.length - 1; i >= 0; i--) {
+								const name = classes[i];
 								if (name) {
 									classes[i] = name.toLowerCase();
 								} else {
 									classes.splice(i, 1);
 								};
 							};
-							attributes['class'] = classes.join(' ');
+							attributes.class = classes.join(' ');
 						};
-						for (var i = 0; i < cssClassNamesLen; i++) {
-							cssClassName = cssClassNames[i];
-							this.__attributes[cssClassName] = attributes;
+						for (let i = 0; i < cssClassNamesLen; i++) {
+							if (types.has(cssClassNames, i)) {
+								const cssClassName = cssClassNames[i];
+								this.__attributes[cssClassName] = attributes;
+							};
 						};
 					}),
 					renderAttributes: doodad.PROTECTED(function renderAttributes(/*optional*/cssClassNames) {
-						var attributes = this.getAttributes(cssClassNames);
+						const attributes = this.getAttributes(cssClassNames);
 					
-						var result = '',
-							keys = types.keys(attributes),
+						let result = '';
+
+						const keys = types.keys(attributes),
 							keysLen = keys.length;
 							
-						for (var i = 0; i < keysLen; i++) {
-							var name = keys[i],
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i],
 								val = attributes[name];
 								
 							if (!types.isNothing(val)) {
@@ -172,7 +175,7 @@ module.exports = {
 							this.restorePreserved('__attributes');
 						} else {
 							cssClassName = this.validateCssClassNames(cssClassName)[0];
-							var preserved = this.getPreserved('__attributes');
+							const preserved = this.getPreserved('__attributes');
 							if (types.has(preserved, cssClassName)) {
 								this.__attributes[cssClassName] = preserved[cssClassName];
 							} else {
@@ -196,88 +199,91 @@ module.exports = {
 					getIdentity: doodad.PUBLIC(function getIdentity(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
 						
-						var identity, 
-							cssClassNamesLen = cssClassNames.length,
-							cssClassName;
+						let identity;
+
+						const cssClassNamesLen = cssClassNames.length;
 						
 						if (cssClassNamesLen === 1) {
-							cssClassName = cssClassNames[0];
+							const cssClassName = cssClassNames[0];
 							identity = this.__identities[cssClassName];
 							if (!identity) {
 								this.__identities[cssClassName] = identity = {
 									id: null,
 									name: null,
-									'class': null,
+									class: null,
 								};
 							};
 						} else {
 							identity = {
 								id: null,
 								name: null,
-								'class': null,
+								class: null,
 							};
 							
-							var classes = [];
+							const classes = [];
 							
-							for (var i = 0; i < cssClassNamesLen; i++) {
-								cssClassName = cssClassNames[i];
-								var attrs = this.__identities[cssClassName];
-								if (attrs) {
-									if (!types.isNothing(attrs.id)) {
-										identity.id = attrs.id;
-									};
-									if (!types.isNothing(attrs.name)) {
-										identity.name = attrs.name;
-									};
-									if (types.isStringAndNotEmpty(attrs['class'])) {
-										types.append(classes, attrs['class'].split(' '));
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__identities[cssClassName];
+									if (attrs) {
+										if (!types.isNothing(attrs.id)) {
+											identity.id = attrs.id;
+										};
+										if (!types.isNothing(attrs.name)) {
+											identity.name = attrs.name;
+										};
+										if (types.isStringAndNotEmpty(attrs.class)) {
+											types.append(classes, attrs.class.split(' '));
+										};
 									};
 								};
 							};
 							
 							if (classes.length) {
-								identity['class'] = types.unique(classes).join(' ');
+								identity.class = types.unique(classes).join(' ');
 							};
 						};
 
 						return identity;
 					}),
+
 					setIdentity: doodad.PUBLIC(function setIdentity(identity, /*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
 						
 						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(identity), "Invalid identity object.");
 						
-						var cssClassNamesLen = cssClassNames.length,
-							cssClassName;
+						const cssClassNamesLen = cssClassNames.length;
 						
 						identity = {
 							id: identity.id || null,
 							name: identity.name || null,
-							'class': identity['class'] || null,
+							class: identity.class || null,
 						};
 
-						if (identity['class']) {
-							var classes = identity['class'].split(' ');
-							classes = types.unique(classes);
-							for (var i = classes.length - 1; i >= 0; i--) {
-								var name = classes[i];
+						if (identity.class) {
+							const classes = types.unique(identity.class.split(' '));
+							for (let i = classes.length - 1; i >= 0; i--) {
+								const name = classes[i];
 								if (name) {
 									classes[i] = name.toLowerCase();
 								} else {
 									classes.splice(i, 1);
 								};
 							};
-							identity['class'] = classes.join(' ');
+							identity.class = classes.join(' ');
 						};
 
-						for (var i = 0; i < cssClassNamesLen; i++) {
-							cssClassName = cssClassNames[i];
-							this.__identities[cssClassName] = identity;
+						for (let i = 0; i < cssClassNamesLen; i++) {
+							if (types.has(cssClassNames, i)) {
+								const cssClassName = cssClassNames[i];
+								this.__identities[cssClassName] = identity;
+							};
 						};
 					}),
 					
 					getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
-						var attributes = this._super(cssClassNames),
+						const attributes = this._super(cssClassNames),
 							identity = this.getIdentity(cssClassNames);
 
 						if (identity.id) {
@@ -288,15 +294,15 @@ module.exports = {
 							attributes.name = identity.name;
 						};
 						
-						if (identity['class']) {
-							if (attributes['class']) { 
+						if (identity.class) {
+							if (attributes.class) { 
 								// Merge classes from attributes and identity
-								var classes = attributes['class'].split(' ');
-								types.append(classes, identity['class'].split(' '));
+								let classes = attributes.class.split(' ');
+								types.append(classes, identity.class.split(' '));
 								classes = types.unique(classes);
-								attributes['class'] = classes.join(' ');
+								attributes.class = classes.join(' ');
 							} else {
-								attributes['class'] = identity['class'];
+								attributes.class = identity.class;
 							};
 						};
 						
@@ -322,7 +328,7 @@ module.exports = {
 						if (types.isNothing(cssClassName)) {
 							this.restorePreserved('__identities');
 						} else {
-							var preserved = this.getPreserved('__identities');
+							const preserved = this.getPreserved('__identities');
 							if (types.has(preserved, cssClassName)) {
 								this.__identities[cssClassName] = preserved[cssClassName];
 							} else {
@@ -334,7 +340,8 @@ module.exports = {
 					}),
 				}))));
 				
-				var __styleRegEx__ = /([a-z0-9]+)([A-Z])?/g;
+				const __styleRegEx__ = /([a-z0-9]+)([A-Z])?/g;
+
 				widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 				{
 					$TYPE_NAME: 'StylesBase',
@@ -347,23 +354,25 @@ module.exports = {
 					getStyles: doodad.PUBLIC(function getStyles(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
 						
-						var styles, 
-							cssClassName,
-							cssClassNamesLen = cssClassNames.length;
+						let styles;
+
+						const cssClassNamesLen = cssClassNames.length;
 						
 						if (cssClassNamesLen === 1) {
-							cssClassName = cssClassNames[0];
+							const cssClassName = cssClassNames[0];
 							styles = this.__styles[cssClassName];
 							if (!styles) {
 								this.__styles[cssClassName] = styles = {};
 							};
 						} else {
 							styles = {};
-							for (var i = 0; i < cssClassNamesLen; i++) {
-								cssClassName = cssClassNames[i];
-								var attrs = this.__styles[cssClassName];
-								if (attrs) {
-									styles = types.extend(styles, attrs);
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__styles[cssClassName];
+									if (attrs) {
+										styles = types.extend(styles, attrs);
+									};
 								};
 							};
 						};
@@ -375,34 +384,34 @@ module.exports = {
 						
 						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(styles), "Invalid styles object.");
 
-						var cssClassNamesLen = cssClassNames.length,
-							cssClassName;
+						const cssClassNamesLen = cssClassNames.length;
 						
-						for (var i = 0; i < cssClassNamesLen; i++) {
-							cssClassName = cssClassNames[i];
-							this.__styles[cssClassName] = styles;
+						for (let i = 0; i < cssClassNamesLen; i++) {
+							if (types.has(cssClassNames, i)) {
+								const cssClassName = cssClassNames[i];
+								this.__styles[cssClassName] = styles;
+							};
 						};
 					}),
 					
 					getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
 
-						var attributes = this._super(cssClassNames),
+						const attributes = this._super(cssClassNames),
 							styles = this.getStyles(cssClassNames),
-							result = '',
 							keys = types.keys(styles),
-							keysLen = keys.length,
-							name,
-							val;
+							keysLen = keys.length;
+
+						let result = '';
 							
-						for (var i = 0; i < keysLen; i++) {
-							name = keys[i];
-							val = styles[name];
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+							let val = styles[name];
 								
 							if (!types.isNothing(val)) {
 								__styleRegEx__.lastIndex = 0;
 								
-								var newName = '',
+								let newName = '',
 									sep = __styleRegEx__.exec(name);
 									
 								while (sep) {
@@ -446,7 +455,7 @@ module.exports = {
 						if (types.isNothing(cssClassName)) {
 							this.restorePreserved('__styles');
 						} else {
-							var preserved = this.getPreserved('__styles');
+							const preserved = this.getPreserved('__styles');
 							if (types.has(preserved, cssClassName)) {
 								this.__styles[cssClassName] = preserved[cssClassName];
 							} else {
