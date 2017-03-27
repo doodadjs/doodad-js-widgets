@@ -508,7 +508,9 @@ module.exports = {
 									
 									this.onRender(new doodad.Event());
 									
-									this.stream.flush();
+									if (this.stream._implements(ioMixIns.BufferedStreamBase)) {
+										this.stream.flush();
+									};
 									
 									this.acquire();
 									
