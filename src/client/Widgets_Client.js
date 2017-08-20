@@ -182,21 +182,6 @@ module.exports = {
 					$TYPE_NAME: 'Render',
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
 				
-					setStream: doodad.OVERRIDE(function setStream(stream) {
-						if (types.isString(stream)) {
-							stream = global.document.getElementById(stream);
-						};
-						
-						if (client.isElement(stream)) {
-							stream = new clientIO.DomOutputStream({
-								element: stream,
-							});
-						};
-						
-						root.DD_ASSERT && root.DD_ASSERT(types._implements(stream, io.HtmlOutputStream), "Invalid stream.");
-
-						this._super(stream);
-					}),
 					acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
 						if (types._instanceof(this.stream, clientIO.DomOutputStream)) {
 							this._super();
@@ -213,7 +198,8 @@ module.exports = {
 				// Widget base
 				//==================================
 				
-				widgets.REGISTER(doodad.BASE(doodad.Object.$extend(
+				widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
+										ioMixIns.TextTransformableOut,
 										widgetsMixIns.Render,
 				{
 					$TYPE_NAME: 'Widget',
@@ -221,6 +207,7 @@ module.exports = {
 				})));
 				
 				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
+										clientIO.DomOutputStream,
 										widgetsMixIns.Attributes,
 										widgetsMixIns.Identities,
 										widgetsMixIns.Styles,

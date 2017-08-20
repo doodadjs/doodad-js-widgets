@@ -477,39 +477,26 @@ module.exports = {
 					onRender: doodad.EVENT(false), // function onRender(ev)
 					onPostRender: doodad.EVENT(false), // function onPostRender(ev)
 					
-					stream: doodad.PUBLIC(doodad.READ_ONLY(null)),
 					__rendered: doodad.PROTECTED(false),
 					
-					setStream: doodad.PUBLIC(function setStream(stream) {
-						root.DD_ASSERT && root.DD_ASSERT(types._implements(stream, ioMixIns.TextOutput), "Invalid stream.");
-
-						if (this.__rendered) {
-							this.__rendered = false;
-							this.release();
-							this.stream.clear();
-						};
-						
-						_shared.setAttribute(this, 'stream', stream);
-					}),
-					
 					render: doodad.PUBLIC(doodad.ASYNC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render() {
-						root.DD_ASSERT && root.DD_ASSERT(types._implements(this.stream, ioMixIns.TextOutput), "Invalid stream.");
-
 						if (this.__rendered) {
 							this.__rendered = false;
 							this.release();
-							this.stream.clear();
+							this.clear();
 						};
 
-						if (!this.onPreRender()) {
+						const canceled = this.onPreRender();
+
+						if (!canceled) {
 							return this._super()
 								.then(function renderPromise() {
 									this.__rendered = true;
 									
 									this.onRender(new doodad.Event());
 									
-									if (this.stream._implements(ioMixIns.BufferedStreamBase)) {
-										this.stream.flush();
+									if (this._implements(ioMixIns.BufferedStreamBase)) {
+										this.flush();
 									};
 									
 									this.acquire();

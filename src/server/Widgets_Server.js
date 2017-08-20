@@ -39,7 +39,8 @@ module.exports = {
 				
 				const doodad = root.Doodad,
 					types = doodad.Types,
-					ioMixIns = doodad.IO.MixIns,
+					io = doodad.IO,
+					ioMixIns = io.MixIns,
 					widgets = doodad.Widgets,
 					widgetsMixIns = widgets.MixIns;
 				
@@ -74,7 +75,8 @@ module.exports = {
 				// Widget base
 				//==================================
 				
-				widgets.REGISTER(doodad.BASE(doodad.Object.$extend(
+				widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
+										ioMixIns.TextTransformableOut,
 										widgetsMixIns.Render,
 				{
 					$TYPE_NAME: 'Widget',
@@ -82,6 +84,7 @@ module.exports = {
 				})));
 				
 				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
+										io.HtmlOutputStream,
 										widgetsMixIns.Attributes,
 										widgetsMixIns.Identities,
 										widgetsMixIns.Styles,
