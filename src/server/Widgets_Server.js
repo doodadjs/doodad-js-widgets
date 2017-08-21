@@ -71,23 +71,38 @@ module.exports = {
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
 				})));
 				
+				widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
+										widgetsMixIns.Render,
+				{
+					$TYPE_NAME: 'Widget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
+				})));
+				
+
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Widget.$extend(
+										widgetsMixIns.Attributes,
+										widgetsMixIns.Identities,
+										widgetsMixIns.Styles,
+				{
+					$TYPE_NAME: 'HtmlWidget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
+				})));
+				
+
 				//==================================
 				// Widget base
 				//==================================
 				
 				widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
 										ioMixIns.TextTransformableOut,
-										widgetsMixIns.Render,
+										widgetsMixIns.Widget,
 				{
 					$TYPE_NAME: 'Widget',
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
 				})));
 				
-				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
-										io.HtmlOutputStream,
-										widgetsMixIns.Attributes,
-										widgetsMixIns.Identities,
-										widgetsMixIns.Styles,
+				widgets.REGISTER(doodad.BASE(io.HtmlOutputStream.$extend(
+										widgetsMixIns.HtmlWidget,
 				{
 					$TYPE_NAME: 'HtmlWidget',
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,

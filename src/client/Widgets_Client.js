@@ -183,16 +183,38 @@ module.exports = {
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
 				
 					acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
-						if (types._instanceof(this.stream, clientIO.DomOutputStream)) {
+						if (types._instanceof(this, clientIO.DomOutputStream)) {
 							this._super();
+						} else {
+							this.overrideSuper();
 						};
 					})),
 					release: doodad.OVERRIDE(doodad.CALL_FIRST(function release() {
-						if (types._instanceof(this.stream, clientIO.DomOutputStream)) {
+						if (types._instanceof(this, clientIO.DomOutputStream)) {
 							this._super();
+						} else {
+							this.overrideSuper();
 						};
 					})),
 				})));
+
+				widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
+										widgetsMixIns.Render,
+				{
+					$TYPE_NAME: 'Widget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
+				})));
+
+				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Widget.$extend(
+										widgetsMixIns.Attributes,
+										widgetsMixIns.Identities,
+										widgetsMixIns.Styles,
+										mixIns.JsEvents,
+				{
+					$TYPE_NAME: 'HtmlWidget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
+				})));
+				
 
 				//==================================
 				// Widget base
@@ -200,18 +222,14 @@ module.exports = {
 				
 				widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
 										ioMixIns.TextTransformableOut,
-										widgetsMixIns.Render,
+										widgetsMixIns.Widget,
 				{
 					$TYPE_NAME: 'Widget',
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
 				})));
 				
-				widgets.REGISTER(doodad.BASE(widgets.Widget.$extend(
-										clientIO.DomOutputStream,
-										widgetsMixIns.Attributes,
-										widgetsMixIns.Identities,
-										widgetsMixIns.Styles,
-										mixIns.JsEvents,
+				widgets.REGISTER(doodad.BASE(clientIO.DomOutputStream.$extend(
+										widgetsMixIns.HtmlWidget,
 				{
 					$TYPE_NAME: 'HtmlWidget',
 					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
