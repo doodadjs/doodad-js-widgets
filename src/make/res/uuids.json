@@ -8,5 +8,7 @@
     "StylesMixIn": "49252395-9336-4c68-ac0e-df6e2477461e",
     "RenderMixIn": "df23f2c0-ee2f-4b7d-842c-00d1d84adc99",
     "WidgetBase": "e7998196-ac01-4d86-897b-6154d74fd568",
-    "HtmlWidgetBase": "13f00f7e-a328-4e2c-b8a8-01711c7a863f"
+    "HtmlWidgetBase": "13f00f7e-a328-4e2c-b8a8-01711c7a863f",
+    "HtmlWidgetMixIn": "46cda5c9-fbaf-40c3-bd15-02343872de84",
+    "WidgetMixIn": "69ff8011-2e3a-43a2-89a3-f77efe89bd12"
 }
