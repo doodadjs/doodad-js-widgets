@@ -99,14 +99,14 @@ module.exports = {
 									const attrs = this.__attributes[cssClassName];
 									if (attrs) {
 										if (attrs['class']) {
-											types.append(classes, attrs['class'].split(' '));
+											tools.append(classes, attrs['class'].split(' '));
 										};
-										attributes = types.extend(attributes, attrs);
+										attributes = tools.extend(attributes, attrs);
 									};
 								};
 							};
 							if (classes.length) {
-								attributes['class'] = types.unique(classes).join(' ');
+								attributes['class'] = tools.unique(classes).join(' ');
 							};
 						};
 						
@@ -120,7 +120,7 @@ module.exports = {
 						const cssClassNamesLen = cssClassNames.length;
 
 						if (attributes.class) {
-							const classes = types.unique(attributes['class'].split(' '));
+							const classes = tools.unique(attributes['class'].split(' '));
 							for (let i = classes.length - 1; i >= 0; i--) {
 								const name = classes[i];
 								if (name) {
@@ -234,14 +234,14 @@ module.exports = {
 											identity.name = attrs.name;
 										};
 										if (types.isStringAndNotEmpty(attrs.class)) {
-											types.append(classes, attrs.class.split(' '));
+											tools.append(classes, attrs.class.split(' '));
 										};
 									};
 								};
 							};
 							
 							if (classes.length) {
-								identity.class = types.unique(classes).join(' ');
+								identity.class = tools.unique(classes).join(' ');
 							};
 						};
 
@@ -262,7 +262,7 @@ module.exports = {
 						};
 
 						if (identity.class) {
-							const classes = types.unique(identity.class.split(' '));
+							const classes = tools.unique(identity.class.split(' '));
 							for (let i = classes.length - 1; i >= 0; i--) {
 								const name = classes[i];
 								if (name) {
@@ -298,8 +298,8 @@ module.exports = {
 							if (attributes.class) { 
 								// Merge classes from attributes and identity
 								let classes = attributes.class.split(' ');
-								types.append(classes, identity.class.split(' '));
-								classes = types.unique(classes);
+								tools.append(classes, identity.class.split(' '));
+								classes = tools.unique(classes);
 								attributes.class = classes.join(' ');
 							} else {
 								attributes.class = identity.class;
@@ -371,7 +371,7 @@ module.exports = {
 									const cssClassName = cssClassNames[i];
 									const attrs = this.__styles[cssClassName];
 									if (attrs) {
-										styles = types.extend(styles, attrs);
+										styles = tools.extend(styles, attrs);
 									};
 								};
 							};
