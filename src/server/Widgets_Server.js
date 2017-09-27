@@ -24,93 +24,92 @@
 //	limitations under the License.
 //! END_REPLACE()
 
-module.exports = {
-	add: function add(DD_MODULES) {
-		DD_MODULES = (DD_MODULES || {});
-		DD_MODULES['Doodad.Widgets.Server'] = {
-			version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
-			namespaces: ['MixIns'],
-			dependencies: [
-				'Doodad.Widgets',
-			],
+exports.add = function add(DD_MODULES) {
+	DD_MODULES = (DD_MODULES || {});
+	DD_MODULES['Doodad.Widgets.Server'] = {
+		version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
+		namespaces: ['MixIns'],
+		dependencies: [
+			'Doodad.Widgets',
+		],
 			
-			create: function create(root, /*optional*/_options, _shared) {
-				"use strict";
+		create: function create(root, /*optional*/_options, _shared) {
+			"use strict";
 				
-				const doodad = root.Doodad,
-					types = doodad.Types,
-					io = doodad.IO,
-					ioMixIns = io.MixIns,
-					widgets = doodad.Widgets,
-					widgetsMixIns = widgets.MixIns;
+			const doodad = root.Doodad,
+				types = doodad.Types,
+				io = doodad.IO,
+				ioMixIns = io.MixIns,
+				widgets = doodad.Widgets,
+				widgetsMixIns = widgets.MixIns;
 				
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
-				{
-					$TYPE_NAME: 'Attributes',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
+			{
+				$TYPE_NAME: 'Attributes',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
+			})));
 					
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-										widgetsMixIns.IdentitiesBase,
-				{
-					$TYPE_NAME: 'Identities',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+									widgetsMixIns.IdentitiesBase,
+			{
+				$TYPE_NAME: 'Identities',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
+			})));
 					
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-										widgetsMixIns.StylesBase,
-				{
-					$TYPE_NAME: 'Styles',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
+									widgetsMixIns.StylesBase,
+			{
+				$TYPE_NAME: 'Styles',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
+			})));
 					
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
-				{
-					$TYPE_NAME: 'Render',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
+			{
+				$TYPE_NAME: 'Render',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
+			})));
 				
-				widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
-										widgetsMixIns.Render,
-				{
-					$TYPE_NAME: 'Widget',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
+									widgetsMixIns.Render,
+			{
+				$TYPE_NAME: 'Widget',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
+			})));
 				
 
-				widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Widget.$extend(
-										widgetsMixIns.Attributes,
-										widgetsMixIns.Identities,
-										widgetsMixIns.Styles,
-				{
-					$TYPE_NAME: 'HtmlWidget',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
-				})));
+			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Widget.$extend(
+									widgetsMixIns.Attributes,
+									widgetsMixIns.Identities,
+									widgetsMixIns.Styles,
+			{
+				$TYPE_NAME: 'HtmlWidget',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
+			})));
 				
 
-				//==================================
-				// Widget base
-				//==================================
+			//==================================
+			// Widget base
+			//==================================
 				
-				widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
-										ioMixIns.TextTransformableOut,
-										widgetsMixIns.Widget,
-				{
-					$TYPE_NAME: 'Widget',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
-				})));
+			widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
+									ioMixIns.TextTransformableOut,
+									widgetsMixIns.Widget,
+			{
+				$TYPE_NAME: 'Widget',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
+			})));
 				
-				widgets.REGISTER(doodad.BASE(io.HtmlOutputStream.$extend(
-										widgetsMixIns.HtmlWidget,
-				{
-					$TYPE_NAME: 'HtmlWidget',
-					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
-				})));
+			widgets.REGISTER(doodad.BASE(io.HtmlOutputStream.$extend(
+									widgetsMixIns.HtmlWidget,
+			{
+				$TYPE_NAME: 'HtmlWidget',
+				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
+			})));
 				
-			},
-		};
-		return DD_MODULES;
-	},
+		},
+	};
+	return DD_MODULES;
 };
+
 //! END_MODULE()
