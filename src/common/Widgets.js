@@ -37,11 +37,11 @@ exports.add = function add(DD_MODULES) {
 				widgets = doodad.Widgets,
 				types = doodad.Types,
 				tools = doodad.Tools,
-				io = doodad.IO,
+				//io = doodad.IO,
 				ioMixIns = doodad.IO.MixIns,
 				extenders = doodad.Extenders,
-				interfaces = doodad.Interfaces,
-				exceptions = doodad.Exceptions,
+				//interfaces = doodad.Interfaces,
+				//exceptions = doodad.Exceptions,
 				mixIns = doodad.MixIns,
 				widgetsMixIns = widgets.MixIns;
 				
@@ -69,7 +69,7 @@ exports.add = function add(DD_MODULES) {
 					if (root.DD_ASSERT) {
 						root.DD_ASSERT(types.isArray(cssClassNames), "Invalid css class names.");
 						root.DD_ASSERT(tools.every(cssClassNames, function(name) {
-							return types.has(this.__attributes, name)
+							return types.has(this.__attributes, name);
 						}, this), "Invalid css class names.");
 					};
 						
@@ -308,9 +308,9 @@ exports.add = function add(DD_MODULES) {
 					return attributes;
 				}),
 				linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
-					if (types._implements(source, widgetsMixIns.Identities), "Invalid source object.") {
-						var	identities = source.__identities,
-							identity = identities[sourceCssClassName];
+					if (types._implements(source, widgetsMixIns.Identities)) {
+						const identities = source.__identities;
+						let identity = identities[sourceCssClassName];
 						if (!identity) {
 							identities[sourceCssClassName] = identity = {
 								id: null,
@@ -439,9 +439,9 @@ exports.add = function add(DD_MODULES) {
 					return attributes;
 				}),
 				linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
-					if (types._implements(source, widgetsMixIns.Styles), "Invalid source object.") {
-						var	styles = source.__styles,
-							style = styles[sourceCssClassName];
+					if (types._implements(source, widgetsMixIns.Styles)) {
+						const styles = source.__styles;
+						let style = styles[sourceCssClassName];
 						if (!style) {
 							styles[sourceCssClassName] = style = {};
 						};
@@ -503,6 +503,9 @@ exports.add = function add(DD_MODULES) {
 								this.onPostRender();
 							}, null, this);
 					};
+
+					this.overrideSuper();
+					return undefined;
 				})))),
 					
 				acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()

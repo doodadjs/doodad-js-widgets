@@ -37,7 +37,7 @@ exports.add = function add(DD_MODULES) {
 			"use strict";
 				
 			const doodad = root.Doodad,
-				types = doodad.Types,
+				//types = doodad.Types,
 				io = doodad.IO,
 				ioMixIns = io.MixIns,
 				widgets = doodad.Widgets,

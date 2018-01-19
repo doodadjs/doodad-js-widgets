@@ -43,9 +43,9 @@ exports.add = function add(DD_MODULES) {
 				io = doodad.IO,
 				clientIO = client.IO,
 				ioMixIns = io.MixIns,
-				extenders = doodad.Extenders,
-				interfaces = doodad.Interfaces,
-				exceptions = doodad.Exceptions,
+				//extenders = doodad.Extenders,
+				//interfaces = doodad.Interfaces,
+				//exceptions = doodad.Exceptions,
 				mixIns = doodad.MixIns,
 				widgetsMixIns = widgets.MixIns;
 				
