@@ -1,14 +1,14 @@
 {
-    "AttributesBaseMixIn": "fd83722f-fc20-4b8c-9d3d-d24904bab3d1",
-    "IdentitiesBaseMixIn": "d6322b10-48e1-4679-aa31-4f92aa9b975e",
-    "StylesBaseMixIn": "42237804-cccb-470b-b155-5dd79158ca65",
-    "RenderBaseMixIn": "904958fd-7ded-4529-860d-e70d532a7761",
-    "AttributesMixIn": "71b39955-bbe4-46a1-8c33-f4b06308cbfd",
-    "IdentitiesMixIn": "f6ea3ed3-2227-4c44-9384-66e16a79e7d9",
-    "StylesMixIn": "49252395-9336-4c68-ac0e-df6e2477461e",
-    "RenderMixIn": "df23f2c0-ee2f-4b7d-842c-00d1d84adc99",
-    "WidgetBase": "e7998196-ac01-4d86-897b-6154d74fd568",
-    "HtmlWidgetBase": "13f00f7e-a328-4e2c-b8a8-01711c7a863f",
-    "HtmlWidgetMixIn": "46cda5c9-fbaf-40c3-bd15-02343872de84",
-    "WidgetMixIn": "69ff8011-2e3a-43a2-89a3-f77efe89bd12"
+    "AttributesBaseMixIn": "ab713307-c39e-455a-85e8-e1b50774a94f",
+    "IdentitiesBaseMixIn": "5451eee3-2c0b-4585-8892-b0c978d46ca9",
+    "StylesBaseMixIn": "d78d30b7-0a7b-4f4b-b7b3-29fbc56e5ae7",
+    "RenderBaseMixIn": "96b59bca-0145-4ecf-b069-eb3785a67b73",
+    "AttributesMixIn": "dc8f0693-eb5e-4e0f-b9d9-2a6fea69b3bc",
+    "IdentitiesMixIn": "3a1b1584-4a11-4861-ba05-781ccc90d3c6",
+    "StylesMixIn": "aefec003-2d37-49c8-9109-e75ccb40ca8b",
+    "RenderMixIn": "1d8beadf-87f1-47ec-87b0-a35d9447f960",
+    "WidgetMixIn": "8bc7e34d-60d2-4e89-b280-8c7168d01ff2",
+    "HtmlWidgetMixIn": "a1889ed1-4375-4f89-be5e-9218b6a3fdc5",
+    "WidgetBase": "c7f9d45c-36b2-43f7-9c22-a3b80d146073",
+    "HtmlWidgetBase": "d4eed2f0-f444-43e8-816d-2afa7cae8b58"
 }
