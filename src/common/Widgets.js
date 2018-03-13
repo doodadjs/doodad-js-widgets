@@ -153,7 +153,7 @@ exports.add = function add(DD_MODULES) {
 							val = attributes[name];
 								
 						if (!types.isNothing(val)) {
-							result += ' ' + tools.escapeHtml(name) + '="' + tools.escapeHtml(val) + '"';
+							result += ' ' + tools.escapeHtml(name, true) + '="' + tools.escapeHtml(val, false) + '"';
 						};
 					};
 						
