@@ -26,7 +26,7 @@
 
 //! IF_SET("mjs")
 //! ELSE()
-	"use strict";
+"use strict";
 //! END_IF()
 
 exports.add = function add(modules) {
@@ -54,467 +54,467 @@ exports.add = function add(modules) {
 			//==================================
 
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
-			{
-				$TYPE_NAME: 'AttributesBase',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesBaseMixIn')), true) */,
+				{
+					$TYPE_NAME: 'AttributesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesBaseMixIn')), true) */,
 
-				__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
-					main: null,
-				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
+						main: null,
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
 
-				validateCssClassNames: doodad.PROTECTED(function validateCssClassNames(/*optional*/cssClassNames) {
-					if (types.isNothing(cssClassNames)) {
-						cssClassNames = ['main'];
-					} else if (types.isString(cssClassNames)) {
-						cssClassNames = cssClassNames.split(' ');
-					};
-
-					if (root.DD_ASSERT) {
-						root.DD_ASSERT(types.isArray(cssClassNames), "Invalid css class names.");
-						root.DD_ASSERT(tools.every(cssClassNames, function(name) {
-							return types.has(this.__attributes, name);
-						}, this), "Invalid css class names.");
-					};
-
-					return cssClassNames;
-				}),
-
-				getAttributes: doodad.PUBLIC(function getAttributes(/*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
-
-					const cssClassNamesLen = cssClassNames.length;
-
-					let attributes;
-
-					if (cssClassNamesLen === 1) {
-						const cssClassName = cssClassNames[0];
-						attributes = this.__attributes[cssClassName];
-						if (!attributes) {
-							this.__attributes[cssClassName] = attributes = {};
+					validateCssClassNames: doodad.PROTECTED(function validateCssClassNames(/*optional*/cssClassNames) {
+						if (types.isNothing(cssClassNames)) {
+							cssClassNames = ['main'];
+						} else if (types.isString(cssClassNames)) {
+							cssClassNames = cssClassNames.split(' ');
 						};
-					} else {
-						attributes = {};
-						const classes = [];
+
+						if (root.DD_ASSERT) {
+							root.DD_ASSERT(types.isArray(cssClassNames), "Invalid css class names.");
+							root.DD_ASSERT(tools.every(cssClassNames, function(name) {
+								return types.has(this.__attributes, name);
+							}, this), "Invalid css class names.");
+						};
+
+						return cssClassNames;
+					}),
+
+					getAttributes: doodad.PUBLIC(function getAttributes(/*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
+
+						const cssClassNamesLen = cssClassNames.length;
+
+						let attributes;
+
+						if (cssClassNamesLen === 1) {
+							const cssClassName = cssClassNames[0];
+							attributes = this.__attributes[cssClassName];
+							if (!attributes) {
+								this.__attributes[cssClassName] = attributes = {};
+							};
+						} else {
+							attributes = {};
+							const classes = [];
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__attributes[cssClassName];
+									if (attrs) {
+										if (attrs['class']) {
+											tools.append(classes, attrs['class'].split(' '));
+										};
+										attributes = tools.extend(attributes, attrs);
+									};
+								};
+							};
+							if (classes.length) {
+								attributes['class'] = tools.unique(classes).join(' ');
+							};
+						};
+
+						return attributes;
+					}),
+					setAttributes: doodad.PUBLIC(function setAttributes(attributes, /*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
+
+						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(attributes), "Invalid attributes object.");
+
+						const cssClassNamesLen = cssClassNames.length;
+
+						if (attributes.class) {
+							const classes = tools.unique(attributes['class'].split(' '));
+							for (let i = classes.length - 1; i >= 0; i--) {
+								const name = classes[i];
+								if (name) {
+									classes[i] = name.toLowerCase();
+								} else {
+									classes.splice(i, 1);
+								};
+							};
+							attributes.class = classes.join(' ');
+						};
 						for (let i = 0; i < cssClassNamesLen; i++) {
 							if (types.has(cssClassNames, i)) {
 								const cssClassName = cssClassNames[i];
-								const attrs = this.__attributes[cssClassName];
-								if (attrs) {
-									if (attrs['class']) {
-										tools.append(classes, attrs['class'].split(' '));
-									};
-									attributes = tools.extend(attributes, attrs);
-								};
+								this.__attributes[cssClassName] = attributes;
 							};
 						};
-						if (classes.length) {
-							attributes['class'] = tools.unique(classes).join(' ');
-						};
-					};
+					}),
+					renderAttributes: doodad.PROTECTED(function renderAttributes(/*optional*/cssClassNames) {
+						const attributes = this.getAttributes(cssClassNames);
 
-					return attributes;
-				}),
-				setAttributes: doodad.PUBLIC(function setAttributes(attributes, /*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
+						let result = '';
 
-					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(attributes), "Invalid attributes object.");
+						const keys = types.keys(attributes),
+							keysLen = keys.length;
 
-					const cssClassNamesLen = cssClassNames.length;
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i],
+								val = attributes[name];
 
-					if (attributes.class) {
-						const classes = tools.unique(attributes['class'].split(' '));
-						for (let i = classes.length - 1; i >= 0; i--) {
-							const name = classes[i];
-							if (name) {
-								classes[i] = name.toLowerCase();
-							} else {
-								classes.splice(i, 1);
+							if (!types.isNothing(val)) {
+								result += ' ' + tools.escapeHtml(name, true) + '="' + tools.escapeHtml(val, false) + '"';
 							};
 						};
-						attributes.class = classes.join(' ');
-					};
-					for (let i = 0; i < cssClassNamesLen; i++) {
-						if (types.has(cssClassNames, i)) {
-							const cssClassName = cssClassNames[i];
-							this.__attributes[cssClassName] = attributes;
+
+						return result;
+					}),
+					linkAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
+						root.DD_ASSERT && root.DD_ASSERT((source !== this) && types._implements(source, widgetsMixIns.Attributes), "Invalid source object.");
+
+						sourceCssClassName = source.validateCssClassNames(sourceCssClassName)[0];
+
+						if (types.isNothing(cssClassName)) {
+							cssClassName = sourceCssClassName;
 						};
-					};
-				}),
-				renderAttributes: doodad.PROTECTED(function renderAttributes(/*optional*/cssClassNames) {
-					const attributes = this.getAttributes(cssClassNames);
 
-					let result = '';
+						this.__attributes[cssClassName] = source.__attributes[sourceCssClassName];
 
-					const keys = types.keys(attributes),
-						keysLen = keys.length;
-
-					for (let i = 0; i < keysLen; i++) {
-						const name = keys[i],
-							val = attributes[name];
-
-						if (!types.isNothing(val)) {
-							result += ' ' + tools.escapeHtml(name, true) + '="' + tools.escapeHtml(val, false) + '"';
-						};
-					};
-
-					return result;
-				}),
-				linkAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
-					root.DD_ASSERT && root.DD_ASSERT((source !== this) && types._implements(source, widgetsMixIns.Attributes), "Invalid source object.");
-
-					sourceCssClassName = source.validateCssClassNames(sourceCssClassName)[0];
-
-					if (types.isNothing(cssClassName)) {
-						cssClassName = sourceCssClassName;
-					};
-
-					this.__attributes[cssClassName] = source.__attributes[sourceCssClassName];
-
-					this._super(source, sourceCssClassName, cssClassName);
-				})),
-				clearAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function clearAttributes(/*optional*/cssClassName) {
-					if (types.isNothing(cssClassName)) {
-						this.restorePreserved('__attributes');
-					} else {
-						cssClassName = this.validateCssClassNames(cssClassName)[0];
-						const preserved = this.getPreserved('__attributes');
-						if (types.has(preserved, cssClassName)) {
-							this.__attributes[cssClassName] = preserved[cssClassName];
+						this._super(source, sourceCssClassName, cssClassName);
+					})),
+					clearAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function clearAttributes(/*optional*/cssClassName) {
+						if (types.isNothing(cssClassName)) {
+							this.restorePreserved('__attributes');
 						} else {
-							delete this.__attributes[cssClassName];
+							cssClassName = this.validateCssClassNames(cssClassName)[0];
+							const preserved = this.getPreserved('__attributes');
+							if (types.has(preserved, cssClassName)) {
+								this.__attributes[cssClassName] = preserved[cssClassName];
+							} else {
+								delete this.__attributes[cssClassName];
+							};
 						};
-					};
 
-					this._super(cssClassName);
-				})),
-			}))));
+						this._super(cssClassName);
+					})),
+				}))));
 
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
-			{
-				$TYPE_NAME: 'IdentitiesBase',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesBaseMixIn')), true) */,
+				{
+					$TYPE_NAME: 'IdentitiesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesBaseMixIn')), true) */,
 
-				__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
-					main: null,
-				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
+						main: null,
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
 
-				getIdentity: doodad.PUBLIC(function getIdentity(/*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
+					getIdentity: doodad.PUBLIC(function getIdentity(/*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
 
-					let identity;
+						let identity;
 
-					const cssClassNamesLen = cssClassNames.length;
+						const cssClassNamesLen = cssClassNames.length;
 
-					if (cssClassNamesLen === 1) {
-						const cssClassName = cssClassNames[0];
-						identity = this.__identities[cssClassName];
-						if (!identity) {
-							this.__identities[cssClassName] = identity = {
+						if (cssClassNamesLen === 1) {
+							const cssClassName = cssClassNames[0];
+							identity = this.__identities[cssClassName];
+							if (!identity) {
+								this.__identities[cssClassName] = identity = {
+									id: null,
+									name: null,
+									class: null,
+								};
+							};
+						} else {
+							identity = {
 								id: null,
 								name: null,
 								class: null,
 							};
-						};
-					} else {
-						identity = {
-							id: null,
-							name: null,
-							class: null,
+
+							const classes = [];
+
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__identities[cssClassName];
+									if (attrs) {
+										if (!types.isNothing(attrs.id)) {
+											identity.id = attrs.id;
+										};
+										if (!types.isNothing(attrs.name)) {
+											identity.name = attrs.name;
+										};
+										if (types.isStringAndNotEmpty(attrs.class)) {
+											tools.append(classes, attrs.class.split(' '));
+										};
+									};
+								};
+							};
+
+							if (classes.length) {
+								identity.class = tools.unique(classes).join(' ');
+							};
 						};
 
-						const classes = [];
+						return identity;
+					}),
+
+					setIdentity: doodad.PUBLIC(function setIdentity(identity, /*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
+
+						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(identity), "Invalid identity object.");
+
+						const cssClassNamesLen = cssClassNames.length;
+
+						identity = {
+							id: identity.id || null,
+							name: identity.name || null,
+							class: identity.class || null,
+						};
+
+						if (identity.class) {
+							const classes = tools.unique(identity.class.split(' '));
+							for (let i = classes.length - 1; i >= 0; i--) {
+								const name = classes[i];
+								if (name) {
+									classes[i] = name.toLowerCase();
+								} else {
+									classes.splice(i, 1);
+								};
+							};
+							identity.class = classes.join(' ');
+						};
 
 						for (let i = 0; i < cssClassNamesLen; i++) {
 							if (types.has(cssClassNames, i)) {
 								const cssClassName = cssClassNames[i];
-								const attrs = this.__identities[cssClassName];
-								if (attrs) {
-									if (!types.isNothing(attrs.id)) {
-										identity.id = attrs.id;
-									};
-									if (!types.isNothing(attrs.name)) {
-										identity.name = attrs.name;
-									};
-									if (types.isStringAndNotEmpty(attrs.class)) {
-										tools.append(classes, attrs.class.split(' '));
-									};
+								this.__identities[cssClassName] = identity;
+							};
+						};
+					}),
+
+					getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
+						const attributes = this._super(cssClassNames),
+							identity = this.getIdentity(cssClassNames);
+
+						if (identity.id) {
+							attributes.id = identity.id;
+						};
+
+						if (identity.name) {
+							attributes.name = identity.name;
+						};
+
+						if (identity.class) {
+							if (attributes.class) {
+							// Merge classes from attributes and identity
+								let classes = attributes.class.split(' ');
+								tools.append(classes, identity.class.split(' '));
+								classes = tools.unique(classes);
+								attributes.class = classes.join(' ');
+							} else {
+								attributes.class = identity.class;
+							};
+						};
+
+						return attributes;
+					}),
+					linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
+						if (types._implements(source, widgetsMixIns.Identities)) {
+							const identities = source.__identities;
+							let identity = identities[sourceCssClassName];
+							if (!identity) {
+								identities[sourceCssClassName] = identity = {
+									id: null,
+									name: null,
+									'class': null,
 								};
 							};
-						};
-
-						if (classes.length) {
-							identity.class = tools.unique(classes).join(' ');
-						};
-					};
-
-					return identity;
-				}),
-
-				setIdentity: doodad.PUBLIC(function setIdentity(identity, /*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
-
-					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(identity), "Invalid identity object.");
-
-					const cssClassNamesLen = cssClassNames.length;
-
-					identity = {
-						id: identity.id || null,
-						name: identity.name || null,
-						class: identity.class || null,
-					};
-
-					if (identity.class) {
-						const classes = tools.unique(identity.class.split(' '));
-						for (let i = classes.length - 1; i >= 0; i--) {
-							const name = classes[i];
-							if (name) {
-								classes[i] = name.toLowerCase();
-							} else {
-								classes.splice(i, 1);
-							};
-						};
-						identity.class = classes.join(' ');
-					};
-
-					for (let i = 0; i < cssClassNamesLen; i++) {
-						if (types.has(cssClassNames, i)) {
-							const cssClassName = cssClassNames[i];
 							this.__identities[cssClassName] = identity;
 						};
-					};
-				}),
 
-				getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
-					const attributes = this._super(cssClassNames),
-						identity = this.getIdentity(cssClassNames);
-
-					if (identity.id) {
-						attributes.id = identity.id;
-					};
-
-					if (identity.name) {
-						attributes.name = identity.name;
-					};
-
-					if (identity.class) {
-						if (attributes.class) {
-							// Merge classes from attributes and identity
-							let classes = attributes.class.split(' ');
-							tools.append(classes, identity.class.split(' '));
-							classes = tools.unique(classes);
-							attributes.class = classes.join(' ');
+						this._super(source, sourceCssClassName, cssClassName);
+					}),
+					clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
+						if (types.isNothing(cssClassName)) {
+							this.restorePreserved('__identities');
 						} else {
-							attributes.class = identity.class;
-						};
-					};
-
-					return attributes;
-				}),
-				linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
-					if (types._implements(source, widgetsMixIns.Identities)) {
-						const identities = source.__identities;
-						let identity = identities[sourceCssClassName];
-						if (!identity) {
-							identities[sourceCssClassName] = identity = {
-								id: null,
-								name: null,
-								'class': null,
+							const preserved = this.getPreserved('__identities');
+							if (types.has(preserved, cssClassName)) {
+								this.__identities[cssClassName] = preserved[cssClassName];
+							} else {
+								delete this.__identities[cssClassName];
 							};
 						};
-						this.__identities[cssClassName] = identity;
-					};
 
-					this._super(source, sourceCssClassName, cssClassName);
-				}),
-				clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
-					if (types.isNothing(cssClassName)) {
-						this.restorePreserved('__identities');
-					} else {
-						const preserved = this.getPreserved('__identities');
-						if (types.has(preserved, cssClassName)) {
-							this.__identities[cssClassName] = preserved[cssClassName];
-						} else {
-							delete this.__identities[cssClassName];
-						};
-					};
-
-					this._super(cssClassName);
-				}),
-			}))));
+						this._super(cssClassName);
+					}),
+				}))));
 
 			const __styleRegEx__ = /([a-z0-9]+)([A-Z])?/g;
 
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
-			{
-				$TYPE_NAME: 'StylesBase',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesBaseMixIn')), true) */,
+				{
+					$TYPE_NAME: 'StylesBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesBaseMixIn')), true) */,
 
-				__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
-					main: null,
-				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
+						main: null,
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
 
-				getStyles: doodad.PUBLIC(function getStyles(/*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
+					getStyles: doodad.PUBLIC(function getStyles(/*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
 
-					let styles;
+						let styles;
 
-					const cssClassNamesLen = cssClassNames.length;
+						const cssClassNamesLen = cssClassNames.length;
 
-					if (cssClassNamesLen === 1) {
-						const cssClassName = cssClassNames[0];
-						styles = this.__styles[cssClassName];
-						if (!styles) {
-							this.__styles[cssClassName] = styles = {};
+						if (cssClassNamesLen === 1) {
+							const cssClassName = cssClassNames[0];
+							styles = this.__styles[cssClassName];
+							if (!styles) {
+								this.__styles[cssClassName] = styles = {};
+							};
+						} else {
+							styles = {};
+							for (let i = 0; i < cssClassNamesLen; i++) {
+								if (types.has(cssClassNames, i)) {
+									const cssClassName = cssClassNames[i];
+									const attrs = this.__styles[cssClassName];
+									if (attrs) {
+										styles = tools.extend(styles, attrs);
+									};
+								};
+							};
 						};
-					} else {
-						styles = {};
+
+						return styles;
+					}),
+					setStyles: doodad.PUBLIC(function setStyles(styles, /*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
+
+						root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(styles), "Invalid styles object.");
+
+						const cssClassNamesLen = cssClassNames.length;
+
 						for (let i = 0; i < cssClassNamesLen; i++) {
 							if (types.has(cssClassNames, i)) {
 								const cssClassName = cssClassNames[i];
-								const attrs = this.__styles[cssClassName];
-								if (attrs) {
-									styles = tools.extend(styles, attrs);
+								this.__styles[cssClassName] = styles;
+							};
+						};
+					}),
+
+					getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
+						cssClassNames = this.validateCssClassNames(cssClassNames);
+
+						const attributes = this._super(cssClassNames),
+							styles = this.getStyles(cssClassNames),
+							keys = types.keys(styles),
+							keysLen = keys.length;
+
+						let result = '';
+
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+							let val = styles[name];
+
+							if (!types.isNothing(val)) {
+								__styleRegEx__.lastIndex = 0;
+
+								let newName = '',
+									sep = __styleRegEx__.exec(name);
+
+								while (sep) {
+									newName += sep[1];
+									if (sep[2]) {
+										newName += '-' + sep[2].toLowerCase();
+									};
+									sep = __styleRegEx__.exec(name);
+								};
+
+								if (newName.length) {
+									if (types.isFunction(val.toString)) {
+										val = val.toString();
+									};
+									result += newName + ':' + val + ';';
 								};
 							};
 						};
-					};
 
-					return styles;
-				}),
-				setStyles: doodad.PUBLIC(function setStyles(styles, /*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
-
-					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(styles), "Invalid styles object.");
-
-					const cssClassNamesLen = cssClassNames.length;
-
-					for (let i = 0; i < cssClassNamesLen; i++) {
-						if (types.has(cssClassNames, i)) {
-							const cssClassName = cssClassNames[i];
-							this.__styles[cssClassName] = styles;
-						};
-					};
-				}),
-
-				getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
-					cssClassNames = this.validateCssClassNames(cssClassNames);
-
-					const attributes = this._super(cssClassNames),
-						styles = this.getStyles(cssClassNames),
-						keys = types.keys(styles),
-						keysLen = keys.length;
-
-					let result = '';
-
-					for (let i = 0; i < keysLen; i++) {
-						const name = keys[i];
-						let val = styles[name];
-
-						if (!types.isNothing(val)) {
-							__styleRegEx__.lastIndex = 0;
-
-							let newName = '',
-								sep = __styleRegEx__.exec(name);
-
-							while (sep) {
-								newName += sep[1];
-								if (sep[2]) {
-									newName += '-' + sep[2].toLowerCase();
-								};
-								sep = __styleRegEx__.exec(name);
-							};
-
-							if (newName.length) {
-								if (types.isFunction(val.toString)) {
-									val = val.toString();
-								};
-								result += newName + ':' + val + ';';
-							};
-						};
-					};
-
-					if (result.length) {
-						attributes.style = result;
-					} else {
-						delete attributes.style;
-					};
-
-					return attributes;
-				}),
-				linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
-					if (types._implements(source, widgetsMixIns.Styles)) {
-						const styles = source.__styles;
-						let style = styles[sourceCssClassName];
-						if (!style) {
-							styles[sourceCssClassName] = style = {};
-						};
-						this.__styles[cssClassName] = style;
-					};
-
-					this._super(source, sourceCssClassName, cssClassName);
-				}),
-				clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
-					if (types.isNothing(cssClassName)) {
-						this.restorePreserved('__styles');
-					} else {
-						const preserved = this.getPreserved('__styles');
-						if (types.has(preserved, cssClassName)) {
-							this.__styles[cssClassName] = preserved[cssClassName];
+						if (result.length) {
+							attributes.style = result;
 						} else {
-							delete this.__styles[cssClassName];
+							delete attributes.style;
 						};
-					};
 
-					this._super(cssClassName);
-				}),
-			}))));
+						return attributes;
+					}),
+					linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
+						if (types._implements(source, widgetsMixIns.Styles)) {
+							const styles = source.__styles;
+							let style = styles[sourceCssClassName];
+							if (!style) {
+								styles[sourceCssClassName] = style = {};
+							};
+							this.__styles[cssClassName] = style;
+						};
+
+						this._super(source, sourceCssClassName, cssClassName);
+					}),
+					clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
+						if (types.isNothing(cssClassName)) {
+							this.restorePreserved('__styles');
+						} else {
+							const preserved = this.getPreserved('__styles');
+							if (types.has(preserved, cssClassName)) {
+								this.__styles[cssClassName] = preserved[cssClassName];
+							} else {
+								delete this.__styles[cssClassName];
+							};
+						};
+
+						this._super(cssClassName);
+					}),
+				}))));
 
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
-										mixIns.Events,
-			{
-				$TYPE_NAME: 'RenderBase',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderBaseMixIn')), true) */,
+				mixIns.Events,
+				{
+					$TYPE_NAME: 'RenderBase',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderBaseMixIn')), true) */,
 
-				onPreRender: doodad.EVENT(true), // function onPreRender(ev)
-				onRender: doodad.EVENT(false), // function onRender(ev)
-				onPostRender: doodad.EVENT(false), // function onPostRender(ev)
+					onPreRender: doodad.EVENT(true), // function onPreRender(ev)
+					onRender: doodad.EVENT(false), // function onRender(ev)
+					onPostRender: doodad.EVENT(false), // function onPostRender(ev)
 
-				__rendered: doodad.PROTECTED(false),
+					__rendered: doodad.PROTECTED(false),
 
-				render: doodad.PUBLIC(doodad.ASYNC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render() {
-					if (this.__rendered) {
-						this.__rendered = false;
-						this.release();
-						this.clear();
-					};
+					render: doodad.PUBLIC(doodad.ASYNC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render() {
+						if (this.__rendered) {
+							this.__rendered = false;
+							this.release();
+							this.clear();
+						};
 
-					const canceled = this.onPreRender();
+						const canceled = this.onPreRender();
 
-					if (!canceled) {
-						return this._super()
-							.then(function renderPromise() {
-								this.__rendered = true;
+						if (!canceled) {
+							return this._super()
+								.then(function renderPromise() {
+									this.__rendered = true;
 
-								this.onRender(new doodad.Event());
+									this.onRender(new doodad.Event());
 
-								if (this._implements(ioMixIns.BufferedStreamBase)) {
-									this.flush();
-								};
+									if (this._implements(ioMixIns.BufferedStreamBase)) {
+										this.flush();
+									};
 
-								this.acquire();
+									this.acquire();
 
-								this.onPostRender();
-							}, null, this);
-					};
+									this.onPostRender();
+								}, null, this);
+						};
 
-					this.overrideSuper();
-					return undefined;
-				})))),
+						this.overrideSuper();
+						return undefined;
+					})))),
 
-				acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()
+					acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()
 
-				release: doodad.PROTECTED(doodad.METHOD()), // function release()
-			}))));
+					release: doodad.PROTECTED(doodad.METHOD()), // function release()
+				}))));
 
 		},
 	};

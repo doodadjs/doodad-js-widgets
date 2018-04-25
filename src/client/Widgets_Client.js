@@ -26,7 +26,7 @@
 
 //! IF_SET("mjs")
 //! ELSE()
-	"use strict";
+"use strict";
 //! END_IF()
 
 exports.add = function add(modules) {
@@ -58,164 +58,164 @@ exports.add = function add(modules) {
 			//==================================
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
-			{
-				$TYPE_NAME: 'Attributes',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
+				{
+					$TYPE_NAME: 'Attributes',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
 
-				applyAttributes: doodad.PROTECTED(function applyAttributes(/*optional*/cssClassNames, elements) {
-					if (client.isElement(elements)) {
-						elements = [elements];
-					};
+					applyAttributes: doodad.PROTECTED(function applyAttributes(/*optional*/cssClassNames, elements) {
+						if (client.isElement(elements)) {
+							elements = [elements];
+						};
 
-					if (root.DD_ASSERT) {
-						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
-						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
-					};
+						if (root.DD_ASSERT) {
+							root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
+							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
+						};
 
-					const attributes = this.getAttributes(cssClassNames),
-						keys = types.keys(attributes),
-						keysLen = keys.length,
-						elementsLen = elements.length;
+						const attributes = this.getAttributes(cssClassNames),
+							keys = types.keys(attributes),
+							keysLen = keys.length,
+							elementsLen = elements.length;
 
-					for (let i = 0; i < keysLen; i++) {
-						const name = keys[i];
-						const val = attributes[name];
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+							const val = attributes[name];
 
-						for (let j = 0; j < elementsLen; j++) {
-							if (types.has(elements, j)) {
-								if (types.isNothing(val)) {
-									elements[j].removeAttribute(name);
-								} else {
-									elements[j].setAttribute(name, val);
+							for (let j = 0; j < elementsLen; j++) {
+								if (types.has(elements, j)) {
+									if (types.isNothing(val)) {
+										elements[j].removeAttribute(name);
+									} else {
+										elements[j].setAttribute(name, val);
+									};
 								};
 							};
 						};
-					};
-				}),
-			})));
+					}),
+				})));
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-											widgetsMixIns.IdentitiesBase,
-			{
-				$TYPE_NAME: 'Identities',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
+				widgetsMixIns.IdentitiesBase,
+				{
+					$TYPE_NAME: 'Identities',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
 
-				applyIdentity: doodad.PROTECTED(function applyIdentity(/*optional*/cssClassNames, elements) {
-					if (client.isElement(elements)) {
-						elements = [elements];
-					};
+					applyIdentity: doodad.PROTECTED(function applyIdentity(/*optional*/cssClassNames, elements) {
+						if (client.isElement(elements)) {
+							elements = [elements];
+						};
 
-					if (root.DD_ASSERT) {
-						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
-						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
-					};
+						if (root.DD_ASSERT) {
+							root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
+							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
+						};
 
-					const attributes = this.getAttributes(cssClassNames),
-						elementsLen = elements.length;
+						const attributes = this.getAttributes(cssClassNames),
+							elementsLen = elements.length;
 
-					for (let i = 0; i < elementsLen; i++) {
-						if (types.has(elements, i)) {
-							const element = elements[i];
+						for (let i = 0; i < elementsLen; i++) {
+							if (types.has(elements, i)) {
+								const element = elements[i];
 
-							if (types.isNothing(attributes.id)) {
-								element.removeAttribute('id');
-							} else {
-								element.setAttribute('id', attributes.id);
-							};
+								if (types.isNothing(attributes.id)) {
+									element.removeAttribute('id');
+								} else {
+									element.setAttribute('id', attributes.id);
+								};
 
-							if (types.isNothing(attributes.name)) {
-								element.removeAttribute('name');
-							} else {
-								element.setAttribute('name', attributes.name);
-							};
+								if (types.isNothing(attributes.name)) {
+									element.removeAttribute('name');
+								} else {
+									element.setAttribute('name', attributes.name);
+								};
 
-							if (types.isNothing(attributes['class'])) {
-								element.removeAttribute('class');
-							} else {
-								element.setAttribute('class', attributes['class']);
+								if (types.isNothing(attributes['class'])) {
+									element.removeAttribute('class');
+								} else {
+									element.setAttribute('class', attributes['class']);
+								};
 							};
 						};
-					};
-				}),
-			})));
+					}),
+				})));
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
-											widgetsMixIns.StylesBase,
-			{
-				$TYPE_NAME: 'Styles',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
+				widgetsMixIns.StylesBase,
+				{
+					$TYPE_NAME: 'Styles',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
 
-				applyStyles: doodad.PROTECTED(function applyStyles(/*optional*/cssClassNames, elements) {
-					if (client.isElement(elements)) {
-						elements = [elements];
-					};
-
-					if (root.DD_ASSERT) {
-						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
-						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
-					};
-
-					const styles = this.getStyles(cssClassNames),
-						keys = types.keys(styles),
-						keysLen = keys.length,
-						elementsLen = elements.length;
-
-					for (let i = 0; i < keysLen; i++) {
-						const name = keys[i];
-
-						let val = styles[name];
-						if (types.isNothing(val)) {
-							val = null;
-						} else if (types.isFunction(val.toString)) {
-							val = val.toString();
+					applyStyles: doodad.PROTECTED(function applyStyles(/*optional*/cssClassNames, elements) {
+						if (client.isElement(elements)) {
+							elements = [elements];
 						};
 
-						for (let j = 0; j < elementsLen; j++) {
-							if (types.has(elements, j)) {
-								elements[j].style[name] = val;
+						if (root.DD_ASSERT) {
+							root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
+							root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
+						};
+
+						const styles = this.getStyles(cssClassNames),
+							keys = types.keys(styles),
+							keysLen = keys.length,
+							elementsLen = elements.length;
+
+						for (let i = 0; i < keysLen; i++) {
+							const name = keys[i];
+
+							let val = styles[name];
+							if (types.isNothing(val)) {
+								val = null;
+							} else if (types.isFunction(val.toString)) {
+								val = val.toString();
+							};
+
+							for (let j = 0; j < elementsLen; j++) {
+								if (types.has(elements, j)) {
+									elements[j].style[name] = val;
+								};
 							};
 						};
-					};
-				}),
-			})));
+					}),
+				})));
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.RenderBase.$extend(
-			{
-				$TYPE_NAME: 'Render',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
+				{
+					$TYPE_NAME: 'Render',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
 
-				acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
-					if (types._instanceof(this, clientIO.DomOutputStream)) {
-						this._super();
-					} else {
-						this.overrideSuper();
-					};
-				})),
-				release: doodad.OVERRIDE(doodad.CALL_FIRST(function release() {
-					if (types._instanceof(this, clientIO.DomOutputStream)) {
-						this._super();
-					} else {
-						this.overrideSuper();
-					};
-				})),
-			})));
+					acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
+						if (types._instanceof(this, clientIO.DomOutputStream)) {
+							this._super();
+						} else {
+							this.overrideSuper();
+						};
+					})),
+					release: doodad.OVERRIDE(doodad.CALL_FIRST(function release() {
+						if (types._instanceof(this, clientIO.DomOutputStream)) {
+							this._super();
+						} else {
+							this.overrideSuper();
+						};
+					})),
+				})));
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(doodad.Class.$extend(
-									widgetsMixIns.Render,
-			{
-				$TYPE_NAME: 'Widget',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
-			})));
+				widgetsMixIns.Render,
+				{
+					$TYPE_NAME: 'Widget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetMixIn')), true) */,
+				})));
 
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Widget.$extend(
-									widgetsMixIns.Attributes,
-									widgetsMixIns.Identities,
-									widgetsMixIns.Styles,
-									mixIns.JsEvents,
-			{
-				$TYPE_NAME: 'HtmlWidget',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
-			})));
+				widgetsMixIns.Attributes,
+				widgetsMixIns.Identities,
+				widgetsMixIns.Styles,
+				mixIns.JsEvents,
+				{
+					$TYPE_NAME: 'HtmlWidget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
+				})));
 
 
 			//==================================
@@ -223,19 +223,19 @@ exports.add = function add(modules) {
 			//==================================
 
 			widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
-									ioMixIns.TextTransformableOut,
-									widgetsMixIns.Widget,
-			{
-				$TYPE_NAME: 'Widget',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
-			})));
+				ioMixIns.TextTransformableOut,
+				widgetsMixIns.Widget,
+				{
+					$TYPE_NAME: 'Widget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
+				})));
 
 			widgets.REGISTER(doodad.BASE(clientIO.DomOutputStream.$extend(
-									widgetsMixIns.HtmlWidget,
-			{
-				$TYPE_NAME: 'HtmlWidget',
-				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
-			})));
+				widgetsMixIns.HtmlWidget,
+				{
+					$TYPE_NAME: 'HtmlWidget',
+					$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
+				})));
 
 		},
 	};
