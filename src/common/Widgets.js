@@ -34,7 +34,7 @@ exports.add = function add(modules) {
 	modules['Doodad.Widgets'] = {
 		version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
 		namespaces: ['MixIns'],
-			
+
 		create: function create(root, /*optional*/_options, _shared) {
 			const doodad = root.Doodad,
 				widgets = doodad.Widgets,
@@ -47,17 +47,17 @@ exports.add = function add(modules) {
 				//exceptions = doodad.Exceptions,
 				mixIns = doodad.MixIns,
 				widgetsMixIns = widgets.MixIns;
-				
-				
+
+
 			//==================================
 			// Mix-ins
 			//==================================
-				
+
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(doodad.Class.$extend(
 			{
 				$TYPE_NAME: 'AttributesBase',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesBaseMixIn')), true) */,
-					
+
 				__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 					main: null,
 				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
@@ -68,20 +68,20 @@ exports.add = function add(modules) {
 					} else if (types.isString(cssClassNames)) {
 						cssClassNames = cssClassNames.split(' ');
 					};
-						
+
 					if (root.DD_ASSERT) {
 						root.DD_ASSERT(types.isArray(cssClassNames), "Invalid css class names.");
 						root.DD_ASSERT(tools.every(cssClassNames, function(name) {
 							return types.has(this.__attributes, name);
 						}, this), "Invalid css class names.");
 					};
-						
+
 					return cssClassNames;
 				}),
-					
+
 				getAttributes: doodad.PUBLIC(function getAttributes(/*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					const cssClassNamesLen = cssClassNames.length;
 
 					let attributes;
@@ -111,14 +111,14 @@ exports.add = function add(modules) {
 							attributes['class'] = tools.unique(classes).join(' ');
 						};
 					};
-						
+
 					return attributes;
 				}),
 				setAttributes: doodad.PUBLIC(function setAttributes(attributes, /*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(attributes), "Invalid attributes object.");
-						
+
 					const cssClassNamesLen = cssClassNames.length;
 
 					if (attributes.class) {
@@ -142,34 +142,34 @@ exports.add = function add(modules) {
 				}),
 				renderAttributes: doodad.PROTECTED(function renderAttributes(/*optional*/cssClassNames) {
 					const attributes = this.getAttributes(cssClassNames);
-					
+
 					let result = '';
 
 					const keys = types.keys(attributes),
 						keysLen = keys.length;
-							
+
 					for (let i = 0; i < keysLen; i++) {
 						const name = keys[i],
 							val = attributes[name];
-								
+
 						if (!types.isNothing(val)) {
 							result += ' ' + tools.escapeHtml(name, true) + '="' + tools.escapeHtml(val, false) + '"';
 						};
 					};
-						
+
 					return result;
 				}),
 				linkAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
 					root.DD_ASSERT && root.DD_ASSERT((source !== this) && types._implements(source, widgetsMixIns.Attributes), "Invalid source object.");
-						
+
 					sourceCssClassName = source.validateCssClassNames(sourceCssClassName)[0];
 
 					if (types.isNothing(cssClassName)) {
 						cssClassName = sourceCssClassName;
 					};
-						
+
 					this.__attributes[cssClassName] = source.__attributes[sourceCssClassName];
-						
+
 					this._super(source, sourceCssClassName, cssClassName);
 				})),
 				clearAttributes: doodad.PUBLIC(doodad.CALL_FIRST(function clearAttributes(/*optional*/cssClassName) {
@@ -184,27 +184,27 @@ exports.add = function add(modules) {
 							delete this.__attributes[cssClassName];
 						};
 					};
-						
+
 					this._super(cssClassName);
 				})),
 			}))));
-				
+
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 			{
 				$TYPE_NAME: 'IdentitiesBase',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesBaseMixIn')), true) */,
-					
+
 				__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 					main: null,
 				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
 
 				getIdentity: doodad.PUBLIC(function getIdentity(/*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					let identity;
 
 					const cssClassNamesLen = cssClassNames.length;
-						
+
 					if (cssClassNamesLen === 1) {
 						const cssClassName = cssClassNames[0];
 						identity = this.__identities[cssClassName];
@@ -221,9 +221,9 @@ exports.add = function add(modules) {
 							name: null,
 							class: null,
 						};
-							
+
 						const classes = [];
-							
+
 						for (let i = 0; i < cssClassNamesLen; i++) {
 							if (types.has(cssClassNames, i)) {
 								const cssClassName = cssClassNames[i];
@@ -241,7 +241,7 @@ exports.add = function add(modules) {
 								};
 							};
 						};
-							
+
 						if (classes.length) {
 							identity.class = tools.unique(classes).join(' ');
 						};
@@ -252,11 +252,11 @@ exports.add = function add(modules) {
 
 				setIdentity: doodad.PUBLIC(function setIdentity(identity, /*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(identity), "Invalid identity object.");
-						
+
 					const cssClassNamesLen = cssClassNames.length;
-						
+
 					identity = {
 						id: identity.id || null,
 						name: identity.name || null,
@@ -283,7 +283,7 @@ exports.add = function add(modules) {
 						};
 					};
 				}),
-					
+
 				getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
 					const attributes = this._super(cssClassNames),
 						identity = this.getIdentity(cssClassNames);
@@ -291,13 +291,13 @@ exports.add = function add(modules) {
 					if (identity.id) {
 						attributes.id = identity.id;
 					};
-						
+
 					if (identity.name) {
 						attributes.name = identity.name;
 					};
-						
+
 					if (identity.class) {
-						if (attributes.class) { 
+						if (attributes.class) {
 							// Merge classes from attributes and identity
 							let classes = attributes.class.split(' ');
 							tools.append(classes, identity.class.split(' '));
@@ -307,7 +307,7 @@ exports.add = function add(modules) {
 							attributes.class = identity.class;
 						};
 					};
-						
+
 					return attributes;
 				}),
 				linkAttributes: doodad.OVERRIDE(function linkAttributes(source, /*optional*/sourceCssClassName, /*optional*/cssClassName) {
@@ -323,7 +323,7 @@ exports.add = function add(modules) {
 						};
 						this.__identities[cssClassName] = identity;
 					};
-						
+
 					this._super(source, sourceCssClassName, cssClassName);
 				}),
 				clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
@@ -341,25 +341,25 @@ exports.add = function add(modules) {
 					this._super(cssClassName);
 				}),
 			}))));
-				
+
 			const __styleRegEx__ = /([a-z0-9]+)([A-Z])?/g;
 
 			widgetsMixIns.REGISTER(doodad.BASE(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 			{
 				$TYPE_NAME: 'StylesBase',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesBaseMixIn')), true) */,
-					
+
 				__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 					main: null,
 				}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
 
 				getStyles: doodad.PUBLIC(function getStyles(/*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					let styles;
 
 					const cssClassNamesLen = cssClassNames.length;
-						
+
 					if (cssClassNamesLen === 1) {
 						const cssClassName = cssClassNames[0];
 						styles = this.__styles[cssClassName];
@@ -378,16 +378,16 @@ exports.add = function add(modules) {
 							};
 						};
 					};
-						
+
 					return styles;
 				}),
 				setStyles: doodad.PUBLIC(function setStyles(styles, /*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
-						
+
 					root.DD_ASSERT && root.DD_ASSERT(types.isJsObject(styles), "Invalid styles object.");
 
 					const cssClassNamesLen = cssClassNames.length;
-						
+
 					for (let i = 0; i < cssClassNamesLen; i++) {
 						if (types.has(cssClassNames, i)) {
 							const cssClassName = cssClassNames[i];
@@ -395,7 +395,7 @@ exports.add = function add(modules) {
 						};
 					};
 				}),
-					
+
 				getAttributes: doodad.OVERRIDE(function getAttributes(/*optional*/cssClassNames) {
 					cssClassNames = this.validateCssClassNames(cssClassNames);
 
@@ -405,17 +405,17 @@ exports.add = function add(modules) {
 						keysLen = keys.length;
 
 					let result = '';
-							
+
 					for (let i = 0; i < keysLen; i++) {
 						const name = keys[i];
 						let val = styles[name];
-								
+
 						if (!types.isNothing(val)) {
 							__styleRegEx__.lastIndex = 0;
-								
+
 							let newName = '',
 								sep = __styleRegEx__.exec(name);
-									
+
 							while (sep) {
 								newName += sep[1];
 								if (sep[2]) {
@@ -423,7 +423,7 @@ exports.add = function add(modules) {
 								};
 								sep = __styleRegEx__.exec(name);
 							};
-								
+
 							if (newName.length) {
 								if (types.isFunction(val.toString)) {
 									val = val.toString();
@@ -432,7 +432,7 @@ exports.add = function add(modules) {
 							};
 						};
 					};
-						
+
 					if (result.length) {
 						attributes.style = result;
 					} else {
@@ -450,7 +450,7 @@ exports.add = function add(modules) {
 						};
 						this.__styles[cssClassName] = style;
 					};
-						
+
 					this._super(source, sourceCssClassName, cssClassName);
 				}),
 				clearAttributes: doodad.OVERRIDE(function clearAttributes(/*optional*/cssClassName) {
@@ -464,7 +464,7 @@ exports.add = function add(modules) {
 							delete this.__styles[cssClassName];
 						};
 					};
-						
+
 					this._super(cssClassName);
 				}),
 			}))));
@@ -474,13 +474,13 @@ exports.add = function add(modules) {
 			{
 				$TYPE_NAME: 'RenderBase',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderBaseMixIn')), true) */,
-				
+
 				onPreRender: doodad.EVENT(true), // function onPreRender(ev)
 				onRender: doodad.EVENT(false), // function onRender(ev)
 				onPostRender: doodad.EVENT(false), // function onPostRender(ev)
-					
+
 				__rendered: doodad.PROTECTED(false),
-					
+
 				render: doodad.PUBLIC(doodad.ASYNC(doodad.MUST_OVERRIDE(doodad.CALL_FIRST(function render() {
 					if (this.__rendered) {
 						this.__rendered = false;
@@ -494,15 +494,15 @@ exports.add = function add(modules) {
 						return this._super()
 							.then(function renderPromise() {
 								this.__rendered = true;
-									
+
 								this.onRender(new doodad.Event());
-									
+
 								if (this._implements(ioMixIns.BufferedStreamBase)) {
 									this.flush();
 								};
-									
+
 								this.acquire();
-									
+
 								this.onPostRender();
 							}, null, this);
 					};
@@ -510,9 +510,9 @@ exports.add = function add(modules) {
 					this.overrideSuper();
 					return undefined;
 				})))),
-					
+
 				acquire: doodad.PROTECTED(doodad.METHOD()), // function acquire()
-					
+
 				release: doodad.PROTECTED(doodad.METHOD()), // function release()
 			}))));
 

@@ -34,9 +34,9 @@ exports.add = function add(modules) {
 	modules['Doodad.Widgets.Client'] = {
 		version: /*! REPLACE_BY(TO_SOURCE(VERSION(MANIFEST("name")))) */ null /*! END_REPLACE()*/,
 		dependencies: [
-			'Doodad.Widgets', 
+			'Doodad.Widgets',
 		],
-			
+
 		create: function create(root, /*optional*/_options, _shared) {
 			const doodad = root.Doodad,
 				widgets = doodad.Widgets,
@@ -51,22 +51,22 @@ exports.add = function add(modules) {
 				//exceptions = doodad.Exceptions,
 				mixIns = doodad.MixIns,
 				widgetsMixIns = widgets.MixIns;
-				
-				
+
+
 			//==================================
 			// Mix-ins
 			//==================================
-				
+
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.AttributesBase.$extend(
 			{
 				$TYPE_NAME: 'Attributes',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('AttributesMixIn')), true) */,
-					
+
 				applyAttributes: doodad.PROTECTED(function applyAttributes(/*optional*/cssClassNames, elements) {
 					if (client.isElement(elements)) {
 						elements = [elements];
 					};
-					
+
 					if (root.DD_ASSERT) {
 						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
 						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
@@ -93,18 +93,18 @@ exports.add = function add(modules) {
 					};
 				}),
 			})));
-				
+
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
 											widgetsMixIns.IdentitiesBase,
 			{
 				$TYPE_NAME: 'Identities',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('IdentitiesMixIn')), true) */,
-					
+
 				applyIdentity: doodad.PROTECTED(function applyIdentity(/*optional*/cssClassNames, elements) {
 					if (client.isElement(elements)) {
 						elements = [elements];
 					};
-					
+
 					if (root.DD_ASSERT) {
 						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
 						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
@@ -116,19 +116,19 @@ exports.add = function add(modules) {
 					for (let i = 0; i < elementsLen; i++) {
 						if (types.has(elements, i)) {
 							const element = elements[i];
-						
+
 							if (types.isNothing(attributes.id)) {
 								element.removeAttribute('id');
 							} else {
 								element.setAttribute('id', attributes.id);
 							};
-							
+
 							if (types.isNothing(attributes.name)) {
 								element.removeAttribute('name');
 							} else {
 								element.setAttribute('name', attributes.name);
 							};
-							
+
 							if (types.isNothing(attributes['class'])) {
 								element.removeAttribute('class');
 							} else {
@@ -138,18 +138,18 @@ exports.add = function add(modules) {
 					};
 				}),
 			})));
-				
+
 			widgetsMixIns.REGISTER(doodad.MIX_IN(widgetsMixIns.Attributes.$extend(
 											widgetsMixIns.StylesBase,
 			{
 				$TYPE_NAME: 'Styles',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('StylesMixIn')), true) */,
-					
+
 				applyStyles: doodad.PROTECTED(function applyStyles(/*optional*/cssClassNames, elements) {
 					if (client.isElement(elements)) {
 						elements = [elements];
 					};
-					
+
 					if (root.DD_ASSERT) {
 						root.DD_ASSERT(types.isArrayLike(elements), "Invalid elements array.");
 						root.DD_ASSERT(tools.every(elements, client.isElement), "Invalid elements array.");
@@ -183,7 +183,7 @@ exports.add = function add(modules) {
 			{
 				$TYPE_NAME: 'Render',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('RenderMixIn')), true) */,
-				
+
 				acquire: doodad.OVERRIDE(doodad.CALL_FIRST(function acquire() {
 					if (types._instanceof(this, clientIO.DomOutputStream)) {
 						this._super();
@@ -216,12 +216,12 @@ exports.add = function add(modules) {
 				$TYPE_NAME: 'HtmlWidget',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetMixIn')), true) */,
 			})));
-				
+
 
 			//==================================
 			// Widget base
 			//==================================
-				
+
 			widgets.REGISTER(doodad.BASE(io.TextOutputStream.$extend(
 									ioMixIns.TextTransformableOut,
 									widgetsMixIns.Widget,
@@ -229,14 +229,14 @@ exports.add = function add(modules) {
 				$TYPE_NAME: 'Widget',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('WidgetBase')), true) */,
 			})));
-				
+
 			widgets.REGISTER(doodad.BASE(clientIO.DomOutputStream.$extend(
 									widgetsMixIns.HtmlWidget,
 			{
 				$TYPE_NAME: 'HtmlWidget',
 				$TYPE_UUID: '' /*! INJECT('+' + TO_SOURCE(UUID('HtmlWidgetBase')), true) */,
 			})));
-				
+
 		},
 	};
 	return modules;
