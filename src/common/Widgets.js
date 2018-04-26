@@ -90,7 +90,8 @@ exports.add = function add(modules) {
 							const cssClassName = cssClassNames[0];
 							attributes = this.__attributes[cssClassName];
 							if (!attributes) {
-								this.__attributes[cssClassName] = attributes = {};
+								attributes = {};
+								this.__attributes[cssClassName] = attributes;
 							};
 						} else {
 							attributes = {};
@@ -209,11 +210,12 @@ exports.add = function add(modules) {
 							const cssClassName = cssClassNames[0];
 							identity = this.__identities[cssClassName];
 							if (!identity) {
-								this.__identities[cssClassName] = identity = {
+								identity = {
 									id: null,
 									name: null,
 									class: null,
 								};
+								this.__identities[cssClassName] = identity;
 							};
 						} else {
 							identity = {
@@ -315,11 +317,12 @@ exports.add = function add(modules) {
 							const identities = source.__identities;
 							let identity = identities[sourceCssClassName];
 							if (!identity) {
-								identities[sourceCssClassName] = identity = {
+								identity = {
 									id: null,
 									name: null,
 									'class': null,
 								};
+								identities[sourceCssClassName] = identity;
 							};
 							this.__identities[cssClassName] = identity;
 						};
@@ -364,7 +367,8 @@ exports.add = function add(modules) {
 							const cssClassName = cssClassNames[0];
 							styles = this.__styles[cssClassName];
 							if (!styles) {
-								this.__styles[cssClassName] = styles = {};
+								styles = {};
+								this.__styles[cssClassName] = styles;
 							};
 						} else {
 							styles = {};
@@ -446,7 +450,8 @@ exports.add = function add(modules) {
 							const styles = source.__styles;
 							let style = styles[sourceCssClassName];
 							if (!style) {
-								styles[sourceCssClassName] = style = {};
+								style = {};
+								styles[sourceCssClassName] = style;
 							};
 							this.__styles[cssClassName] = style;
 						};
