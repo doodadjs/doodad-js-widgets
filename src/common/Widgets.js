@@ -300,7 +300,7 @@ exports.add = function add(modules) {
 
 						if (identity.class) {
 							if (attributes.class) {
-							// Merge classes from attributes and identity
+								// Merge classes from attributes and identity
 								let classes = attributes.class.split(' ');
 								tools.append(classes, identity.class.split(' '));
 								classes = tools.unique(classes);
