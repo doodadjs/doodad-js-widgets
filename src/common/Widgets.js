@@ -60,7 +60,7 @@ exports.add = function add(modules) {
 
 					__attributes: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
-					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, isProto: false, cloneOnInit: true}))),
 
 					validateCssClassNames: doodad.PROTECTED(function validateCssClassNames(/*optional*/cssClassNames) {
 						if (types.isNothing(cssClassNames)) {
@@ -197,7 +197,7 @@ exports.add = function add(modules) {
 
 					__identities: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
-					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, isProto: false, cloneOnInit: true}))),
 
 					getIdentity: doodad.PUBLIC(function getIdentity(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
@@ -354,7 +354,7 @@ exports.add = function add(modules) {
 
 					__styles: doodad.PROTECTED(doodad.READ_ONLY(doodad.ATTRIBUTE({
 						main: null,
-					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, cloneOnInit: true}))),
+					}, extenders.ExtendObject, {maxDepth: 1, isPreserved: true, isProto: false, cloneOnInit: true}))),
 
 					getStyles: doodad.PUBLIC(function getStyles(/*optional*/cssClassNames) {
 						cssClassNames = this.validateCssClassNames(cssClassNames);
